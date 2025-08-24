@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('Nombre');
             $table->string('Mail')->unique();
             $table->string('Contraseña');
-            $table->string('SecretKey');
+            $table->string('SecretKey')->nullable();;
             $table->timestamps();
         });
     }
