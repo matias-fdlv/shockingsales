@@ -8,6 +8,16 @@
 <body class="bg-light">
  
 <div class="container py-4">
+    @auth
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Sistema de Personas</h1>
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="btn btn-outline-danger">Cerrar Sesión</button>
+        </form>
+    </div>
+    @endauth
+
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
