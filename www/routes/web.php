@@ -1,12 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PostController;
- 
+use App\Http\Controllers\PersonaController; 
+
 Route::get('/', function () {
-    return redirect()->route('posts.index');
+    return redirect()->route('personas.index');
 });
-Route::resource('posts', PostController::class);
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::resource('personas', PersonaController::class);
