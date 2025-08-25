@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ProductoInterno', function (Blueprint $table) {
+        Schema::create('productoInterno', function (Blueprint $table) {
             $table->id('IDProductoI');
             $table->string('Nombre');
             $table->string('Marca');
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ProductoInterno');
+        Schema::dropIfExists('productoInterno');
     }
 };

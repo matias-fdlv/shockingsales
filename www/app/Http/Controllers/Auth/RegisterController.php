@@ -18,6 +18,7 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $request->validate([
+            'Estado' => 'nullable|string',
             'Nombre' => 'required|string|max:255',
             'Mail' => 'required|email|unique:personas,Mail',
             'password' => 'required|string|min:8|confirmed',
@@ -25,6 +26,7 @@ class RegisterController extends Controller
         ]);
 
         $persona = Persona::create([
+            'Estado' => $request->Estado,
             'Nombre' => $request->Nombre,
             'Mail' => $request->Mail,
             'password' => Hash::make($request->password),

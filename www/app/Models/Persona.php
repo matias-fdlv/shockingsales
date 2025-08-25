@@ -16,6 +16,7 @@ class Persona extends Authenticatable
     protected $keyType = 'int';
 
     protected $fillable = [
+        'Estado',
         'Nombre',
         'Mail', 
         'password',

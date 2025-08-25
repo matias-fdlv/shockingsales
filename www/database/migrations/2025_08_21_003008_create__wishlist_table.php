@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('Wishlist', function (Blueprint $table) {
+        Schema::create('wishlist', function (Blueprint $table) {
             $table->unsignedBigInteger('IDPersona');
             $table->unsignedBigInteger('IDProductoI');
-            $table->foreign('IDPersona')->references('IDPersona')->on('Usuario')->onDelete('cascade');
-            $table->foreign('IDProductoI')->references('IDProductoI')->on('ProductoInterno')->onDelete('cascade');
+            $table->foreign('IDPersona')->references('IDPersona')->on('usuario')->onDelete('cascade');
+            $table->foreign('IDProductoI')->references('IDProductoI')->on('productoInterno')->onDelete('cascade');
             $table->primary('IDPersona', 'IDProductoI');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('Wishlist');
+        Schema::dropIfExists('wishlist');
     }
 };

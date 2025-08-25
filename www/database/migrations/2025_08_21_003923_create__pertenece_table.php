@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('Pertenece', function (Blueprint $table) {
+        Schema::create('pertenece', function (Blueprint $table) {
             $table->unsignedBigInteger('IDProductoI');
             $table->unsignedBigInteger('IDCategoria');
-            $table->foreign('IDProductoI')->references('IDProductoI')->on('ProductoInterno')->onDelete('cascade');
-            $table->foreign('IDCategoria')->references('IDCategoria')->on('Categoria')->onDelete('cascade');
+            $table->foreign('IDProductoI')->references('IDProductoI')->on('productoInterno')->onDelete('cascade');
+            $table->foreign('IDCategoria')->references('IDCategoria')->on('categoria')->onDelete('cascade');
             $table->primary('IDProductoI', 'IDCategoria');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('Pertenece');
+        Schema::dropIfExists('pertenece');
     }
 };

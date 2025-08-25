@@ -30,6 +30,7 @@ class PersonaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'Estado' => 'nullable|string',
             'Nombre' => 'required',
             'Mail' => 'required',
             'Contraseña' => 'required',
@@ -63,6 +64,7 @@ class PersonaController extends Controller
     public function update(Request $request, Persona $persona)
     {
        $request->validate([
+            'Estado' => 'nullable|string',
             'Nombre' => 'required',
             'Mail' => 'required',
             'Contraseña' => 'required',

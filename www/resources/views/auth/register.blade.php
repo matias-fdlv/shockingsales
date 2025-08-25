@@ -44,15 +44,6 @@
                                id="password_confirmation" name="password_confirmation" required>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="SecretKey" class="form-label">Secret Key (Opcional)</label>
-                        <input type="text" class="form-control @error('SecretKey') is-invalid @enderror" 
-                               id="SecretKey" name="SecretKey" value="{{ old('SecretKey') }}">
-                        @error('SecretKey')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
                     <button type="submit" class="btn btn-primary w-100">Registrarse</button>
                 </form>
 
