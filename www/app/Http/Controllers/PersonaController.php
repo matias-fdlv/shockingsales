@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Persona;
 use Illuminate\Http\Request;
 
-class PersonaController extends Controller
+class PersonaController
 {
     /**
      * Display a listing of the resource.
