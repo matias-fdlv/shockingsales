@@ -23,7 +23,7 @@ class LoginController
 
         if (Auth::attempt(['Mail' => $request->Mail, 'password' => $request->password], $request->remember)) {
             $request->session()->regenerate();
-            return redirect()->intended('/personas');
+            return redirect()->intended('/');
         }
 
         throw ValidationException::withMessages([
@@ -36,7 +36,7 @@ class LoginController
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/login');
+        return redirect('/');
     }
 
     public function username()

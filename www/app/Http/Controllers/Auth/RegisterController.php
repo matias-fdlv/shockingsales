@@ -35,6 +35,6 @@ class RegisterController
 
         Auth::login($persona);
 
-        return redirect('/personas')->with('success', '¡Registro exitoso!');
+        return redirect('/')->with('success', '¡Registro exitoso!');
     }
 }

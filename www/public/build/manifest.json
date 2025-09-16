@@ -1,0 +1,10 @@
+{
+  "resources/css/plantilla.css": {
+    "file": "assets/plantilla-B59Eba8d.css",
+    "src": "resources/css/plantilla.css",
+    "isEntry": true,
+    "names": [
+      "plantilla.css"
+    ]
+  }
+}
