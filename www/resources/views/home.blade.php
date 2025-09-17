@@ -33,7 +33,7 @@
 
     @guest
       <p class="mt-3 center">
-        <a href="{{ route('register') }}">Crea tu cuenta</a> para wishlist y alertas de precio.
+            <a href="{{ route('registro.usuario') }}" class="btn btn-success">Registrate para obtener ofertas</a>
       </p>
     @endguest
   </div>

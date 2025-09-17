@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -18,7 +17,7 @@ class Persona extends Authenticatable
     protected $fillable = [
         'Estado',
         'Nombre',
-        'Mail', 
+        'Mail',
         'password',
         'SecretKey',
     ];
@@ -28,15 +27,22 @@ class Persona extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
             'password' => 'hashed',
         ];
     }
+
+    // 🔹 Solo verifican si existe fila en la tabla administrador o usuario
+    public function admin()
+{
+    return $this->hasOne(Administrador::class, 'IDPersona', 'IDPersona');
+}
+
+public function usuario()
+{
+    return $this->hasOne(Usuario::class, 'IDPersona', 'IDPersona');
+}
+
 }

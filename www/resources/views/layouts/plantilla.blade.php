@@ -7,7 +7,7 @@
     <title>@yield('title', 'ShockingSales')</title>
 
     {{-- Cargamos el CSS estático desde public/ --}}
- @vite('resources/css/plantilla.css')
+    @vite('resources/css/plantilla.css')
 
 </head>
 
@@ -32,16 +32,14 @@
                     En este caso muestra las opciones de login y registrarse -->
                 @guest
                     <li><a href="{{ route('login') }}">Entrar</a></li>
-                    <li><a href="{{ route('register') }}">Registrarse</a></li>
+                    <li><a href="{{ route('registro.usuario') }}">Registrarse como Usuario</a></li>
+
                 @endguest
 
                 <!-- Vista de un usuario autenticado, el @ auth indica que lo que se muestra a un usuario autenticado.
                     En este caso muestra las opciones de personas que es el sistema hecho hasta ahora y salir para cerrar sesion -->
                 @auth
-                    <li><a href="{{ route('personas.index') }}">Personas</a></li>
                     <li><a href="">Wishlist</a></li>
-
-
                     <li>
                         <form action="{{ route('logout') }}" method="POST" style="display:inline">
                             @csrf
