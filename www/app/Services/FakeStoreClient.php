@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Tienda;
 use Illuminate\Support\Facades\Http;
 
+//esta clase es capaz de llamar a la API y recoger los datos que se le pidan.
 class FakeStoreClient
 {
     private string $baseUrl;

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+//credencialtienda es donde (supuestamente) guardaremos las token y la informacion necesaria para acceder a la API (???)
 class CredencialTienda extends Model
 {
     protected $table = 'credencialesTienda';
