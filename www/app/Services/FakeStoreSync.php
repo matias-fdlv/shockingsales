@@ -9,7 +9,6 @@ use App\Models\ProductoTienda;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
-
 class FakeStoreSync
 {
     public function __construct(private FakeStoreClient $client) {}
