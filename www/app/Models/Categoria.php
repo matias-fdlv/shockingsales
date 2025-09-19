@@ -7,14 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 //categoria de cada producto.
 class Categoria extends Model
 {
+    //tabla a usar
     protected $table = 'categoria';
+    
+    //primarykey de la tabla
     protected $primaryKey = 'IDCategoria';
-    public $timestamps = false;
+ 
+    //fillables
     protected $fillable = ['Nombre'];
 
+    //belongstomany, a traves de una relacion con la tabla pertenece hacemos un N a N, muchas Categorias pertenecen a muchos ProductosInternos
     public function productos()
     {
-        // Pivot: pertenece(IDProductoI, IDCategoria)
         return $this->belongsToMany(ProductoInterno::class, 'pertenece', 'IDCategoria', 'IDProductoI');
     }
 }
