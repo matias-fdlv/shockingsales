@@ -7,7 +7,7 @@
     <title>@yield('title', 'ShockingSales')</title>
 
     {{-- Cargamos el CSS estático desde public/ --}}
-    @vite('resources/css/plantilla.css')
+    @vite('resources/css/adminStyle.css')
 
 </head>
 
@@ -24,7 +24,6 @@
                 </li>
                 <li><a href="{{ url('/admin/dashboard') }}">Home</a></li>
                 <li><a href="{{ route('registro.admin') }}">Crea un nuevo Administrador</a></li>
-                <li><a href="{{ route('personas.index') }}">Usuarios de ShockingSales</a></li>
                 <li><a href="{{ url('/admin/dashboard') }}">Perfil</a></li>
 
                 <li><a href="">Wishlist</a></li>

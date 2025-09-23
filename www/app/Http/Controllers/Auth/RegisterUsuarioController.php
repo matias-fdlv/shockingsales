@@ -3,41 +3,37 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Persona;
-use App\Models\Usuario;
+use App\Services\Users\UserDataService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class RegisterUsuarioController
 {
-    public function showRegistrationForm()
+    public function mostrarFormularioUsuario()
     {
         return view('registro.registro-usuario');
     }
 
-    public function register(Request $request)
+    public function RegistrarUsuario(Request $request, UserDataService $service)
     {
-        $request->validate([
-            'Nombre' => 'required|string|max:255',
-            'Mail' => 'required|email|unique:personas,Mail',
+        $validated = $request->validate([
+            'Nombre'   => 'required|string|max:255',
+            'Mail'     => 'required|email|unique:personas,Mail',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        $persona = Persona::create([
-            'Estado' => 1,
-            'Nombre' => $request->Nombre,
-            'Mail' => $request->Mail,
-            'password' => Hash::make($request->password),
-        ]);
+        // Crear persona + fila en usuario (sin iniciar sesión todavía)
+        $persona = $service->registrarUsuario(
+            nombre: $validated['Nombre'],
+            mail: $validated['Mail'],
+            passwordPlano: $validated['password']
+        );
 
-        // 👇 Insertamos en tabla usuario
-        Usuario::create([
-            'IDPersona' => $persona->IDPersona
-        ]);
-
+        // Iniciar sesión (guard por defecto) y regenerar la sesión por seguridad
         Auth::login($persona);
+        $request->session()->regenerate();
 
-        return redirect()->route('home')->with('success', '¡Usuario registrado con éxito!');
+        return redirect()->route('home')
+            ->with('success', '¡Usuario registrado con éxito!');
     }
 }

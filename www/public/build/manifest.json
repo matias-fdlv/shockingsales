@@ -1,4 +1,12 @@
 {
+  "resources/css/adminStyle.css": {
+    "file": "assets/adminStyle-B_Mb2lZO.css",
+    "src": "resources/css/adminStyle.css",
+    "isEntry": true,
+    "names": [
+      "adminStyle.css"
+    ]
+  },
   "resources/css/plantilla.css": {
     "file": "assets/plantilla-B59Eba8d.css",
     "src": "resources/css/plantilla.css",

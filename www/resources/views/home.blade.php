@@ -4,6 +4,8 @@
 
 @section('content')
 
+@guest('admin')
+
   <!-- HERO(sección protagonista): 1 grande + 2 laterales -->
   <section class="hero-grid">
     <article class="hero hero-main" style="--hero-bg:url('{{ asset('img/hero-electro.jpg') }}')">
@@ -76,5 +78,8 @@
       @endfor
     @endif
   </section>
+
+  @endguest
+
 
 @endsection

@@ -8,6 +8,21 @@
         <h4>Registro de Administrador</h4>
     </div>
     <div class="card-body">
+
+        {{-- Mensajes flash --}}
+        @if(session('success'))
+            <div class="alert alert-success" role="alert">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger" role="alert">
+                {{ session('error') }}
+            </div>
+        @endif
+        {{-- /Mensajes flash --}}
+
         <form method="POST" action="{{ route('registro.admin') }}">
             @csrf
             <div class="mb-3">

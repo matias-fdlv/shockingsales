@@ -2,44 +2,71 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@yield('title', 'ShockingSales')</title>
 
-    {{-- Cargamos el CSS estático desde public/ --}}
-    @vite('resources/css/plantilla.css')
-
+    {{-- CSS: admin vs resto --}}
+    @auth('admin')
+        @vite('resources/css/adminStyle.css')
+    @else
+        @vite('resources/css/plantilla.css')
+    @endauth
 </head>
 
 <body>
-
     <header>
         <h1 class="logo">ShockingSales</h1>
 
         <nav>
             <ul>
-                <li>
-                    <div class="container">
-                        <form class="search" action="{{ url('/buscar') }}" method="GET">
-                            <input type="text" name="q" placeholder="Buscar producto, modelo o SKU…"
-                                value="{{ request('q') }}">
-                            <button class="button" type="submit">Buscar</button>
-                        </form>
-                </li>
-                <li><a href="{{ url('/') }}">Home</a></li>
 
-                <!-- Vista de un usuario no autenticado, el @ guest indica que lo que se muestra a un usuario no autenticado.
-                    En este caso muestra las opciones de login y registrarse -->
-                @guest
+                {{-- Invitado real: sin sesión en web ni admin --}}
+
+                @if (!Auth::guard('web')->check() && !Auth::guard('admin')->check())
+                    <li>
+                        <div class="container">
+                            <form class="search" action="{{ url('/buscar') }}" method="GET">
+                                <input type="text" name="q" placeholder="Buscar producto, modelo o SKU…"
+                                    value="{{ request('q') }}">
+                                <button class="button" type="submit">Buscar</button>
+                            </form>
+                        </div>
+                    </li>
+
+                    <li><a href="{{ url('/') }}">Home</a></li>
                     <li><a href="{{ route('login') }}">Entrar</a></li>
                     <li><a href="{{ route('registro.usuario') }}">Registrarse como Usuario</a></li>
+                @endif
 
-                @endguest
+                {{-- Usuario autenticado (NO admin) --}}
+                @if (Auth::guard('web')->check() && !Auth::guard('admin')->check())
+                    <li>
+                        <div class="container">
+                            <form class="search" action="{{ url('/buscar') }}" method="GET">
+                                <input type="text" name="q" placeholder="Buscar producto, modelo o SKU…"
+                                    value="{{ request('q') }}">
+                                <button class="button" type="submit">Buscar</button>
+                            </form>
+                        </div>
+                    </li>
+                    <li><a href="{{ url('/') }}">Home</a></li>
+                    <li><a href="#">Wishlist</a></li>
+                    <li>
+                        <form action="{{ route('logout') }}" method="POST" style="display:inline">
+                            @csrf
+                            <button class="button" type="submit">Salir</button>
+                        </form>
+                    </li>
+                @endif
 
-                <!-- Vista de un usuario autenticado, el @ auth indica que lo que se muestra a un usuario autenticado.
-                    En este caso muestra las opciones de personas que es el sistema hecho hasta ahora y salir para cerrar sesion -->
-                @auth
-                    <li><a href="">Wishlist</a></li>
+                {{-- Administrador (guard admin) --}}
+                @auth('admin')
+                    <li><a href="{{ url('/') }}">Home</a></li>
+
+                    <li><a href="{{ route('VistaAdmin.homeAdmin') }}">Panel</a></li>
+                    <li><a href="{{ route('registro.admin') }}">Crear Administrador</a></li>
+                    <li><a href="{{ route('VistaAdmin.homeAdmin') }}">Perfil</a></li>
                     <li>
                         <form action="{{ route('logout') }}" method="POST" style="display:inline">
                             @csrf
@@ -60,7 +87,6 @@
     <footer>
         © {{ date('Y') }} ShockingSales
     </footer>
-
 </body>
 
 </html>

@@ -4,7 +4,6 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h1>Listado de personas</h1>
-    <a href="{{ route('personas.create') }}" class="btn btn-primary">Nueva persona</a>
        <a href="{{ route('home') }}" class="btn btn-primary">Menú Principal</a>
 </div>
  

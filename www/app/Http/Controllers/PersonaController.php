@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Persona;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 
 class PersonaController
@@ -12,9 +13,14 @@ class PersonaController
      */
     public function index()
     {
-        $personas = Persona::latest()->paginate(5);
+        $personas = Persona::has('usuario')
+            ->with('usuario') // opcional, para acceder a sus datos directamente
+            ->latest()
+            ->paginate(5);
+
         return view('personas.index', compact('personas'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -36,9 +42,9 @@ class PersonaController
             'Contraseña' => 'required',
             'SecretKey' => 'nullable|string'
         ]);
- 
+
         Persona::create($request->all());
- 
+
         return redirect()->route('personas.index')->with('success', 'Persona creado correctamente.');
     }
 
@@ -63,16 +69,16 @@ class PersonaController
      */
     public function update(Request $request, Persona $persona)
     {
-       $request->validate([
+        $request->validate([
             'Estado' => 'nullable|string',
             'Nombre' => 'required',
             'Mail' => 'required',
             'Contraseña' => 'required',
             'SecretKey' => 'nullable|string'
         ]);
- 
+
         $persona->update($request->all());
- 
+
         return redirect()->route('personas.index')->with('success', 'Persona actualizado correctamente.');
     }
 

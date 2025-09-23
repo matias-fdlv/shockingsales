@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -10,7 +11,7 @@ class LoginController
 {
     public function showLoginForm()
     {
-        return view('auth.login'); // tu formulario de login
+        return view('auth.login'); // formulario de login
     }
 
     public function login(Request $request)
@@ -23,19 +24,22 @@ class LoginController
         if (Auth::attempt(['Mail' => $request->Mail, 'password' => $request->password], $request->remember)) {
             $request->session()->regenerate();
 
-            $persona = Auth::user();
+            $persona = Auth::user(); // guard web
 
-            // 🔹 Si está en la tabla administrador → va a dashboard admin
+            // Si es admin: inicia tambien la sesión en el guard admin y redirige al home de admin
             if ($persona->admin) {
-                return redirect()->route('VistaAdmin.homeAdmin');
+                // Inicia la sesión admin con el mismo usuario
+                Auth::guard('admin')->login($persona, (bool)$request->remember);
+
+                return redirect()->route('home');
             }
 
-            // 🔹 Si está en la tabla usuario → va al home
+            // Si es usuario común: al home
             if ($persona->usuario) {
                 return redirect()->route('home');
             }
 
-            // Si no tiene rol válido, lo deslogueamos
+            // Sin rol válido
             Auth::logout();
             return redirect()->route('login')->withErrors([
                 'Mail' => 'Tu cuenta no tiene rol válido.',
@@ -49,11 +53,17 @@ class LoginController
 
     public function logout(Request $request)
     {
+        // Cerrar ambos tipos de sesiones
+        if (Auth::guard('admin')->check()) {
+            Auth::guard('admin')->logout();
+        }
         Auth::logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
     }
+
 
     public function username()
     {

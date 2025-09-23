@@ -2,42 +2,32 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Models\Persona;
-use App\Models\Administrador;
+use App\Services\Users\UserDataService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
-class RegisterAdminController
+class RegisterAdminController 
 {
-    public function showRegistrationForm()
+    public function mostrarFormularioAdmin()
     {
         return view('registro.registro-admin');
     }
 
-    public function register(Request $request)
+    public function RegistrarAdmin(Request $request, UserDataService $service)
     {
-        $request->validate([
-            'Nombre' => 'required|string|max:255',
-            'Mail' => 'required|email|unique:personas,Mail',
+        $validated = $request->validate([
+            'Nombre'   => 'required|string|max:255',
+            'Mail'     => 'required|email|unique:personas,Mail',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        $persona = Persona::create([
-            'Estado' => 1,
-            'Nombre' => $request->Nombre,
-            'Mail' => $request->Mail,
-            'password' => Hash::make($request->password),
-        ]);
+        $service->registrarAdmin(
+            nombre: $validated['Nombre'],
+            mail: $validated['Mail'],
+            passwordPlano: $validated['password'],
+            estado: 1
+        );
 
-        // 👇 Insertamos en tabla administrador
-        Administrador::create([
-            'IDPersona' => $persona->IDPersona
-        ]);
-
-        Auth::login($persona);
-
-        return redirect()->route('VistaAdmin.homeAdmin')->with('success', '¡Administrador registrado con éxito!');
+        return redirect()->route('registro.admin') 
+            ->with('success', '¡Administrador creado. Ahora puede iniciar sesión!');
     }
 }
