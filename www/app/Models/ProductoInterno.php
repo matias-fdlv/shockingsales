@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductoInterno extends Model
 {
     //tabla que usa de la bd
-    protected $table = 'productoInterno';
+    protected $table = 'productoInternos';
 
     //clave primaria de la tabla usada
     protected $primaryKey = 'IDProductoI';

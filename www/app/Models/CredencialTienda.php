@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CredencialTienda extends Model
 {
     //tabla de la BD
-    protected $table = 'credencialesTienda';
+    protected $table = 'credencialesTiendas';
 
     //primarykey de la tabla
     protected $primaryKey = 'IDCredencial';

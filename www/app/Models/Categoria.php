@@ -9,7 +9,7 @@ class Categoria extends Model
 
 {
     //tabla a usar
-    protected $table = 'categoria';
+    protected $table = 'categorias';
 
     //primarykey de la tabla
     protected $primaryKey = 'IDCategoria';

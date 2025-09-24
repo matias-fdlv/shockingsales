@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Administrador extends Model
 {
-    protected $table = 'administrador';
+    protected $table = 'administradors';
     protected $primaryKey = 'IDPersona';
     public $timestamps = false;
 

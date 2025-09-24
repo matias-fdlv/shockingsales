@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Tienda extends Model
 {
     //llamar a la tabla tienda de la bd
-    protected $table = 'tienda';
+    protected $table = 'tiendas';
 
     //se setea que la primarykey de tienda es IDTIenda (tal como esta en la BD)
     protected $primaryKey = 'IDTienda';

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductoTienda extends Model
 {
     //tabla a usar de la bd
-    protected $table = 'productoTienda';
+    protected $table = 'productoTiendas';
 
     //primarykey de la tabla
     protected $primaryKey = 'IDProductoT';
