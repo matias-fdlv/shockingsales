@@ -33,8 +33,8 @@ class Persona extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    // 🔹 Solo verifican si existe fila en la tabla administrador o usuario
+    
+    // funciones para verificar si existe fila en la tabla administrador o usuario
     public function admin()
 {
     return $this->hasOne(Administrador::class, 'IDPersona', 'IDPersona');

@@ -11,9 +11,8 @@ use Throwable;
 
 class UserDataService
 {
-    /**
-     * Crea Persona + Administrador (Eloquent por ahora) y devuelve el modelo Persona.
-     */
+    //Crea Persona + Administrador
+    
     public function registrarAdmin(string $nombre, string $mail, string $passwordPlano, int $estado = 1, ?string $secretKey = null): Persona
     {
         $hash = Hash::make($passwordPlano);
@@ -26,14 +25,12 @@ class UserDataService
 
 
         } catch (Throwable $e) {
-            // Podés mapear 'Mail ya registrado' a error de validación si querés
+            
             throw $e;
         }
     }
 
-    /**
-     * Crea Persona + Usuario (Eloquent por ahora) y devuelve el modelo Persona.
-     */
+    //Crea Persona + Usuario 
     public function registrarUsuario(string $nombre, string $mail, string $passwordPlano, int $estado = 1, ?string $secretKey = null): Persona
     {
         $hash = Hash::make($passwordPlano);
@@ -47,7 +44,7 @@ class UserDataService
 
 
         } catch (Throwable $e) {
-            // Podés mapear 'Mail ya registrado' a error de validación si querés
+        
             throw $e;
         }
     }
