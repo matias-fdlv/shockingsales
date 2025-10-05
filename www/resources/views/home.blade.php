@@ -4,82 +4,131 @@
 
 @section('content')
 
-@guest('admin')
+    @guest('admin')
+        <!-- Vista Preliminar de los productos en la pagina principal,  esto está sugetoa cambios -->
 
-  <!-- HERO(sección protagonista): 1 grande + 2 laterales -->
-  <section class="hero-grid">
-    <article class="hero hero-main" style="--hero-bg:url('{{ asset('img/hero-electro.jpg') }}')">
-      <a class="inner" href="{{ url('/buscar?q=ofertas') }}">
-        <span class="badge">Ofertas</span>
-        <h2>Comparador de Electrónica y Videojuegos</h2>
-        <p class="meta">Busca y compara en Amazon, MercadoLibre y eBay</p>
-      </a>
-    </article>
 
-    <article class="hero hero-side" style="--hero-bg:url('{{ asset('img/hero-gaming.jpg') }}')">
-      <a class="inner" href="{{ url('/buscar?q=consolas') }}">
-        <span class="badge">Gaming</span>
-        <h3>Consolas y accesorios al mejor precio</h3>
-        <p class="meta">PS5 · Xbox · Nintendo</p>
-      </a>
-    </article>
+        <section>
+            <h1>Sugerencias</h1>
+            <article>
+                <div class="suggestions">
+                    <div class="products-grid">
 
-    <article class="hero hero-side" style="--hero-bg:url('{{ asset('img/hero-deals.jpg') }}')">
-      <a class="inner" href="{{ url('/buscar?q=smartphones') }}">
-        <span class="badge">Top</span>
-        <h3>Smartphones y audio con descuento</h3>
-        <p class="meta">Auriculares · Smartwatch</p>
-      </a>
-    </article>
-  </section>
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/200x150/4a90e2/ffffff?text=Producto+1" alt="Producto 1">
+                            </div>
+                            <div class="product-info">
+                                <div class="product-name">Auriculares Inalámbricos</div>
+                                <div class="product-price">$99.99</div>
+                            </div>
+                        </div>
 
-    @guest
-      <p class="mt-3 center">
-            <a href="{{ route('registro.usuario') }}" class="btn btn-success">Registrate para obtener ofertas</a>
-      </p>
+
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/200x150/e74c3c/ffffff?text=Producto+2" alt="Producto 2">
+                            </div>
+                            <div class="product-info">
+                                <div class="product-name">Smartwatch Deportivo</div>
+                                <div class="product-price">$149.99</div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/200x150/2ecc71/ffffff?text=Producto+3" alt="Producto 3">
+                            </div>
+                            <div class="product-info">
+                                <div class="product-name">Tablet 10 Pulgadas</div>
+                                <div class="product-price">$79.99</div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/200x150/f39c12/ffffff?text=Producto+4" alt="Producto 4">
+                            </div>
+                            <div class="product-info">
+                                <div class="product-name">Cámara Digital</div>
+                                <div class="product-price">$199.99</div>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/200x150/9b59b6/ffffff?text=Producto+5" alt="Producto 5">
+                            </div>
+                            <div class="product-info">
+                                <div class="product-name">Altavoz Bluetooth</div>
+                                <div class="product-price">$129.99</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+
+        <section>
+            <h1>Nuevas Ofertas</h1>
+            <article>
+                <div class="new-offers">
+                    <div class="offers-grid">
+                        <!-- Oferta 1 -->
+                        <div class="offer-card">
+                            <div class="offer-badge">Oferta</div>
+                            <div class="offer-image">
+                                <img src="https://via.placeholder.com/250x180/3498db/ffffff?text=Oferta+1" alt="Oferta 1">
+                            </div>
+                            <div class="offer-info">
+                                <div class="offer-name">Smart TV 55" 4K</div>
+                                <div class="offer-price">
+                                    <span class="current-price">$79.99</span>
+                                    <span class="original-price">$99.99</span>
+                                    <span class="discount">-20%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Oferta 2 -->
+                        <div class="offer-card">
+                            <div class="offer-badge">Oferta</div>
+                            <div class="offer-image">
+                                <img src="https://via.placeholder.com/250x180/e74c3c/ffffff?text=Oferta+2" alt="Oferta 2">
+                            </div>
+                            <div class="offer-info">
+                                <div class="offer-name">Laptop Gaming</div>
+                                <div class="offer-price">
+                                    <span class="current-price">$149.99</span>
+                                    <span class="original-price">$199.99</span>
+                                    <span class="discount">-25%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Oferta 3 -->
+                        <div class="offer-card">
+                            <div class="offer-badge">Oferta</div>
+                            <div class="offer-image">
+                                <img src="https://via.placeholder.com/250x180/2ecc71/ffffff?text=Oferta+3" alt="Oferta 3">
+                            </div>
+                            <div class="offer-info">
+                                <div class="offer-name">Consola de Videojuegos</div>
+                                <div class="offer-price">
+                                    <span class="current-price">$59.99</span>
+                                    <span class="original-price">$79.99</span>
+                                    <span class="discount">-25%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+            </article>
+        </section>
     @endguest
-  </div>
-
-  <!--  GRID DE TARJETAS: destacados o últimos. -->
-  <section class="post-grid mt-4">
-    @php
-      $items = $destacados ?? $posts ?? null;
-    @endphp
-
-    @if($items && count($items))
-      @foreach($items as $item)
-        <article class="card post">
-          <a href="{{ $item->url ?? '#' }}">
-            <img src="{{ $item->cover_url ?? asset('img/card1.jpg') }}" alt="">
-            <div class="post-body">
-              <h4>{{ $item->title }}</h4>
-              <p class="muted">
-                {{ $item->store ?? 'Tiendas' }}
-                @if(!empty($item->created_at))
-                  · {{ \Illuminate\Support\Carbon::parse($item->created_at)->translatedFormat('M d, Y') }}
-                @endif
-              </p>
-            </div>
-          </a>
-        </article>
-      @endforeach
-    @else
-
-      @for($i=1; $i<=8; $i++)
-        <article class="card post">
-          <a href="#">
-            <img src="{{ asset('img/card'.(($i % 4) + 1).'.jpg') }}" alt="">
-            <div class="post-body">
-              <h4>Buen diseño es memorable y significativo.</h4>
-              <p class="muted">Amazon · Dic 15, 2017</p>
-            </div>
-          </a>
-        </article>
-      @endfor
-    @endif
-  </section>
-
-  @endguest
 
 
 @endsection

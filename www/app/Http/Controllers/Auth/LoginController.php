@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
+use App\Models\Persona;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -10,35 +11,45 @@ class LoginController
 {
     public function showLoginForm()
     {
-        return view('auth.login'); // formulario de login
+        return view('auth.login');
     }
 
     public function login(Request $request)
     {
         $request->validate([
-            'Mail' => 'required|email',
+            'Mail'     => 'required|email',
             'password' => 'required',
         ]);
 
-        if (Auth::attempt(['Mail' => $request->Mail, 'password' => $request->password], $request->remember)) {
+
+        $persona = Persona::where('Mail', $request->Mail)->first();
+
+        // Verificación para ver si la cuenta está activa o no.
+
+        if ($persona && strtolower(trim((string)$persona->Estado)) !== 'activo') {
+            return redirect()
+                ->route('login')
+                ->withErrors(['Mail' => 'Tu cuenta está desactivada. Contacta al administrador.'])
+                ->withInput($request->only('Mail', 'remember'));
+        }
+
+        if (Auth::attempt(['Mail' => $request->Mail, 'password' => $request->password], (bool)$request->remember)) {
             $request->session()->regenerate();
 
-            $persona = Auth::user(); // guard web
+            $persona = Auth::user();
 
-            // Si es admin: inicia tambien la sesión en el guard admin y redirige al home de admin
+            // Si es admin
             if ($persona->admin) {
-                // Inicia la sesión admin con el mismo usuario
                 Auth::guard('admin')->login($persona, (bool)$request->remember);
-
                 return redirect()->route('home');
             }
 
-            // Si es usuario común: al home
+            // Si es usuario 
             if ($persona->usuario) {
                 return redirect()->route('home');
             }
 
-            // Sin rol válido
+            // Sin rol válido muestra este mensaje
             Auth::logout();
             return redirect()->route('login')->withErrors([
                 'Mail' => 'Tu cuenta no tiene rol válido.',
@@ -50,9 +61,10 @@ class LoginController
         ]);
     }
 
+
+    //Función para cerrár sesión
     public function logout(Request $request)
     {
-        // Cerrar ambos tipos de sesiones
         if (Auth::guard('admin')->check()) {
             Auth::guard('admin')->logout();
         }

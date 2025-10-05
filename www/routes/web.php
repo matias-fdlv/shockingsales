@@ -12,8 +12,9 @@ use App\Http\Controllers\Auth\RegisterAdminController;
 | Página principal (pública)
 |--------------------------------------------------------------------------
 */
+
 Route::get('/', function () {
-    return view('home'); 
+    return view('home');
 })->name('home');
 
 /*
@@ -57,7 +58,7 @@ Route::middleware('auth:web')->group(function () {
 */
 
 // Redirige el login admin al login general (reutilizamos el mismo formulario)
-Route::get('/admin/login', fn () => redirect()->route('login'))->name('admin.login');
+Route::get('/admin/login', fn() => redirect()->route('login'))->name('admin.login');
 
 // Logout admin que cierra solo la sesión del guard admin
 Route::post('/admin/logout', function () {
@@ -72,11 +73,14 @@ Route::prefix('admin')->middleware(['auth:admin', 'admin'])->group(function () {
 
     // Dashboard admin 
     Route::get('/dashboard', function () {
-        return view('VistaAdmin.homeAdmin'); 
+        return view('VistaAdmin.homeAdmin');
     })->name('VistaAdmin.homeAdmin');
 
     //Administracion de Usuarios
-Route::get('/dashboard/Administracion-De-Usuarios', [PersonaController::class, 'index'])
-    ->name('Administracion-De-Usuarios');
+    Route::get('/dashboard/Administracion-De-Usuarios', [PersonaController::class, 'index'])
+        ->name('Administracion-De-Usuarios');
 
+
+    Route::post('/personas/activar',   [PersonaController::class, 'activarCuenta'])->name('personas.activar');
+    Route::post('/personas/desactivar', [PersonaController::class, 'desactivarCuenta'])->name('personas.desactivar');
 });

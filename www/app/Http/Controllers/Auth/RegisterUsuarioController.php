@@ -22,14 +22,12 @@ class RegisterUsuarioController
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        // Crear persona + fila en usuario (sin iniciar sesión todavía)
         $persona = $service->registrarUsuario(
             nombre: $validated['Nombre'],
             mail: $validated['Mail'],
             passwordPlano: $validated['password']
         );
 
-        // Iniciar sesión (guard por defecto) y regenerar la sesión por seguridad
         Auth::login($persona);
         $request->session()->regenerate();
 

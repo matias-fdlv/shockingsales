@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Persona;
-use App\Models\Usuario;
+use App\Services\Users\UserDataService;
 use Illuminate\Http\Request;
 
 class PersonaController
@@ -14,7 +14,7 @@ class PersonaController
     public function index()
     {
         $personas = Persona::has('usuario')
-            ->with('usuario') // opcional, para acceder a sus datos directamente
+            ->with('usuario') 
             ->latest()
             ->paginate(5);
 
@@ -80,6 +80,20 @@ class PersonaController
         $persona->update($request->all());
 
         return redirect()->route('personas.index')->with('success', 'Persona actualizado correctamente.');
+    }
+
+    public function activarCuenta(Request $request, UserDataService $service)
+    {
+        $data = $request->validate(['Mail' => ['required', 'email']]);
+        $service->activarUsuario(mail: $data['Mail']);
+        return back();
+    }
+
+    public function desactivarCuenta(Request $request, UserDataService $service)
+    {
+        $data = $request->validate(['Mail' => ['required', 'email']]);
+        $service->desactivarUsuario(mail: $data['Mail']);
+        return back();
     }
 
     /**
