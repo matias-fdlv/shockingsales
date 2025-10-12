@@ -46,7 +46,7 @@ class SearchService
 
     //buscar en una tienda especifica, metodo usado en search.
     private function searchInFakeStoreAPI(Tienda $tienda, string $query): array
-    {
+     {
         //obtener datos en la BD fijos
         $baseUrl = $tienda->credenciales->where('Tipo', 'base_url')->first()->Valor;
 
