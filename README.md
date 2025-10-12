@@ -25,14 +25,14 @@ CHANGELOG
 
 [0.1.0] - 2025-08-20<br>
 Añadido<br>
--Migraciones a la BD desde laravel
+-Migraciones a la BD desde laravel<br>
 -Contenedores Docker pefectamente funcionando, con contenedor de PHP, BD y PHPMYadmin
 
 ---
 
 [1.0.0] - 2025-08-30<br>
 Añadido<br>
--Se agrega LogIn y SignIn
+-Se agrega LogIn y SignIn<br>
 -Se agrega CRUD básico
 
 ---
@@ -63,13 +63,13 @@ Añadido<br>
 
 [2.0.0] - 2025-10-12<br>
 Añadido<br>
--Busqueda a traves de la barra de busqueda usando la Fake Store API, esta solo permite busqueda por categorías y en ingles.
+-Busqueda a traves de la barra de busqueda usando la Fake Store API, esta solo permite busqueda por categorías y en ingles.<br>
 -Seeder para las APIs de cada tienda
 
-Modificado
+Modificado<br>
 -docker-compose.yml ahora incluye un nuevo contenedor MYSQL usado para la replicacion
 
-Corrección de bugs
+Corrección de bugs<br>
 -Se arregla un bug que mataba a los contenedores de BD y PHP segundos despues de iniciarlos por culpa de datos que no concordaban entre versiones de la imágen docker MySQL que usabamos antes y la que usamos ahora.
 
 ---
