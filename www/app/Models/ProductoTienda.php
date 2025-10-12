@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 //aca se guarda el producto que se obtiene de las apis, teniendo id, nombre, precio, url afiliado y ultima fecha en la que obtuvimos los datos de este.
+//--INUTIL DE MOMENTO--
 class ProductoTienda extends Model
 {
     //tabla a usar de la bd

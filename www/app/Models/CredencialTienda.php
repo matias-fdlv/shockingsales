@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 //credencialtienda es donde (supuestamente) guardaremos las token y la informacion necesaria para acceder a la API (???)
+//--INUTIL DE MOMENTO--
+//será usada cuando se consigan apis como la de MERCADOLIBRE en un futuro.
 class CredencialTienda extends Model
 {
     //tabla de la BD

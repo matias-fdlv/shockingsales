@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 //este archivo encapsula la tienda, la cual podria ser mercado libre o aliexpress por ejemplo.
 //cuenta con los datos importantes de estas tiendas como el nombre, el id, el estado y api que es para ???
+//--INUTIL DE MOMENTO--
 class Tienda extends Model
 {
     //llamar a la tabla tienda de la bd

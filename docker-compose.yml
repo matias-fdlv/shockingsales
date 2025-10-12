@@ -2,28 +2,61 @@ services:
 
   db:
     image: mysql:8.0.43-debian
-    container_name: mysql_db
+    container_name: db
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: dbSS
       MYSQL_USER: userSS
       MYSQL_PASSWORD: pass
-    volumes:
-      - db_data:/var/lib/mysql
+    command: >
+      --server-id=1
+      --log-bin=mysql-bin
+      --gtid_mode=ON
+      --enforce-gtid-consistency=ON
+      --log_replica_updates=ON
+      --binlog_format=ROW
     ports:
       - "3306:3306"
+    volumes:
+      - datos_db:/var/lib/mysql
+
+
   
+  slave:
+    image: mysql:8.0.43-debian
+    container_name: mysql_secundario
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    depends_on:
+      - db
+    command: >
+      --server-id=2
+      --relay-log=mysql-relay-bin
+      --gtid_mode=ON
+      --enforce-gtid-consistency=ON
+      --log_replica_updates=ON
+      --read-only=ON
+      --log-bin=mysql-bin
+      --binlog-format=row
+      --binlog-expire-logs-seconds=604800
+    ports:
+      - "3307:3306"
+    volumes:
+      - datos_slave:/var/lib/mysql
+
   web:
     build: .
-    container_name: apache_php
+    container_name: web
     ports:
       - "8080:80"
     volumes:
       - ./www:/var/www/html
     depends_on:
       - db
+    # los comandos que se usan cada vez que se hace un build del docker compose incluye un sleep para que espere un momento antes de iniciar y usar todos los comandos, debido a que el contenedor de DB tarda un poco en empezar.
     command: >
       bash -lc "
+      sleep 15 && 
       cd /var/www/html &&
       rm -f storage/framework/vite.hot &&
       npm ci || npm install &&
@@ -35,7 +68,7 @@ services:
   
   phpmyadmin:
     image: phpmyadmin:latest
-    container_name: pma
+    container_name: phpmyadmin
     environment:
       PMA_HOST: db
       PMA_USER: root
@@ -46,4 +79,5 @@ services:
       - "8081:80"
 
 volumes:
-  db_data:
+  datos_db:
+  datos_slave:

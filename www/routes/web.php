@@ -6,6 +6,8 @@ use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterUsuarioController;
 use App\Http\Controllers\Auth\RegisterAdminController;
+use App\Http\Controllers\SearchController;
+use App\Services\SearchService;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +18,19 @@ use App\Http\Controllers\Auth\RegisterAdminController;
 Route::get('/', function () {
     return view('home');
 })->name('home');
+
+/*
+|--------------------------------------------------------------------------
+| Busqueda
+|--------------------------------------------------------------------------
+*/
+// Rutas principales
+// Ruta para procesar búsquedas (formulario tradicional)
+Route::post('/buscar', [SearchController::class, 'search'])->name('search.execute');
+
+// Ruta para ver resultados (por si alguien quiere compartir enlace)
+Route::get('/buscar', [SearchController::class, 'search'])->name('search.results');
+
 
 /*
 |--------------------------------------------------------------------------

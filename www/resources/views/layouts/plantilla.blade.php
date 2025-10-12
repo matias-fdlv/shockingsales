@@ -73,19 +73,20 @@
 
         @unless ($isAdmin)
             <div class="container">
-                <form class="search" action="{{ url('/buscar') }}" method="GET" role="search">
-                    <input type="text" name="q" placeholder="Buscar producto, modelo o SKU…"
-                        value="{{ request('q') }}" aria-label="Buscar">
+                <!-- FORMULARIO ACTUALIZADO -->
+                <form class="search" action="{{ route('search.execute') }}" method="POST" role="search">
+                    @csrf
+                    <input type="search" name="query" placeholder="Buscar producto, modelo o SKU…" 
+                           value="{{ request('query') }}" aria-label="Buscar" required minlength="2">
                     <button class="button" type="submit">Buscar</button>
                 </form>
             </div>
         @endunless
+        
         <section class="container">
-
             @yield('content')
         </section>
     </main>
-
     <footer>
         © {{ date('Y') }} ShockingSales
     </footer>
