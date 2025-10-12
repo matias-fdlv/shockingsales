@@ -6,7 +6,6 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>@yield('title', 'Mi Aplicación')</title>
 
-  {{-- Tu CSS principal --}}
   @yield('styles')
 </head>
 <body>
@@ -16,7 +15,7 @@
         <a class="brand" href="{{ route('home') }}">
           <img src="{{ asset('imagenes/Logo1.JPG') }}" alt="Logo">
         </a>
-          <h1>Registro de Administrador</h1>
+          <h1>Registro </h1>
 
         <nav>
           <ul>

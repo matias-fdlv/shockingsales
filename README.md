@@ -71,3 +71,22 @@ Corrección de bugs<br>
 -Se arregla un bug que mataba a los contenedores de BD y PHP segundos despues de iniciarlos por culpa de datos que no concordaban entre versiones de la imágen docker MySQL que usabamos antes y la que usamos ahora.
 
 ---
+
+[2.1.0] - 2025-10-12<br>
+Añadido<br>
+-Integración de un perfil para usuarios(Tanto administradores como usuarios comunes), en el se ven los datos de estos y actualizar su información.<br>
+-Actualizazion del estilo css para el registro de Usuario y el de Administradores.
+
+---
+
+[2.1.1] - 2025-10-12<br>
+Correción de vista<br>
+-Se arregló la vista de Registro de Usuario para que coincida parcialmente con la de Registro de Administrador,
+
+---
+
+[2.2.0] - 2025-10-12<br>
+Añadido<br>
+-Se configuró y modificó el contenedor slave para su uso en la réplica de la base de datos.
+
+---
