@@ -1,5 +1,4 @@
 @extends('layouts.registro')
-
 @section('title', 'Registro Usuario')
 
 @section('styles')
@@ -7,38 +6,54 @@
 @endsection
 
 @section('content')
-<div class="card shadow">
-    <div class="card-header bg-primary text-white">
-        <h4>Registro de Usuario</h4>
+<div class="auth-container">
+  <div class="auth-card">
+
+    <div class="card-header">
+      <h1>Crear cuenta de usuario</h1>
+      <p>Completa los datos para continuar</p>
     </div>
+
     <div class="card-body">
-        <form method="POST" action="{{ route('registro.usuario') }}">
-            @csrf
-            <div class="mb-3">
-                <label for="Nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="Nombre" name="Nombre" value="{{ old('Nombre') }}" required>
-                @error('Nombre') <small class="text-danger">{{ $message }}</small> @enderror
-            </div>
+      {{-- Mensajes flash --}}
+      @if(session('success'))
+        <div class="message success">{{ session('success') }}</div>
+      @endif
+      @if(session('error'))
+        <div class="message error">{{ session('error') }}</div>
+      @endif
 
-            <div class="mb-3">
-                <label for="Mail" class="form-label">Correo electrónico</label>
-                <input type="email" class="form-control" id="Mail" name="Mail" value="{{ old('Mail') }}" required>
-                @error('Mail') <small class="text-danger">{{ $message }}</small> @enderror
-            </div>
+      <form method="POST" action="{{ route('registro.usuario') }}" class="auth-form">
+        @csrf
 
-            <div class="mb-3">
-                <label for="password" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-                @error('password') <small class="text-danger">{{ $message }}</small> @enderror
-            </div>
+        <div class="field">
+          <label for="Nombre">Nombre</label>
+          <input id="Nombre" name="Nombre" type="text" value="{{ old('Nombre') }}" required>
+          @error('Nombre') <div class="error-text">{{ $message }}</div> @enderror
+        </div>
 
-            <div class="mb-3">
-                <label for="password_confirmation" class="form-label">Confirmar contraseña</label>
-                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
-            </div>
+        <div class="field">
+          <label for="Mail">Correo electrónico</label>
+          <input id="Mail" name="Mail" type="email" value="{{ old('Mail') }}" autocomplete="email" required>
+          @error('Mail') <div class="error-text">{{ $message }}</div> @enderror
+        </div>
 
-            <button type="submit" class="btn btn-success">Registrar Usuario</button>
-        </form>
+        <div class="field">
+          <label for="password">Contraseña</label>
+          <input id="password" name="password" type="password" autocomplete="new-password" required>
+          <div class="help-text">Mínimo 8 caracteres</div>
+          @error('password') <div class="error-text">{{ $message }}</div> @enderror
+        </div>
+
+        <div class="field">
+          <label for="password_confirmation">Confirmar contraseña</label>
+          <input id="password_confirmation" name="password_confirmation" type="password" autocomplete="new-password" required>
+        </div>
+
+        <button type="submit" class="btn-primary">Registrar Usuario</button>
+      </form>
     </div>
+
+  </div>
 </div>
 @endsection
