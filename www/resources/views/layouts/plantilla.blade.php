@@ -39,8 +39,9 @@
                         @endguest
                     @endguest
 
-                    <!--Usuario autenticado -->
+                    <!--Usuario autenticad. Independientemente si es admin o usuario-->
                     @if ($isUser && !$isAdmin)
+                        <li><a href="{{ route('perfil.mostrar') }}">Mi perfil</a></li>
                         <li><a href="#">Wishlist</a></li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST" style="display:inline">
@@ -50,7 +51,7 @@
                         </li>
                     @endif
 
-                        <!--Administrador autenticado -->
+                    <!--Administrador autenticado -->
                     @if ($isAdmin)
                         <li><a href="{{ route('VistaAdmin.homeAdmin') }}">Panel</a></li>
                         <li><a href="{{ route('registro.admin') }}">Crear Admin</a></li>
@@ -71,22 +72,22 @@
 
     <main>
 
+        <!-- Mostrar a todos menos a Admin -->
         @unless ($isAdmin)
             <div class="container">
-                <!-- FORMULARIO ACTUALIZADO -->
-                <form class="search" action="{{ route('search.execute') }}" method="POST" role="search">
-                    @csrf
-                    <input type="search" name="query" placeholder="Buscar producto, modelo o SKU…" 
-                           value="{{ request('query') }}" aria-label="Buscar" required minlength="2">
+                <form class="search" action="{{ url('/buscar') }}" method="GET" role="search">
+                    <input type="text" name="q" placeholder="Buscar producto, modelo o SKU…"
+                        value="{{ request('q') }}" aria-label="Buscar">
                     <button class="button" type="submit">Buscar</button>
                 </form>
             </div>
         @endunless
-        
         <section class="container">
+
             @yield('content')
         </section>
     </main>
+
     <footer>
         © {{ date('Y') }} ShockingSales
     </footer>

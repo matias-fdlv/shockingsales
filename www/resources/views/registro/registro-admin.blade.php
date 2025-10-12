@@ -1,55 +1,60 @@
 @extends('layouts.registro')
-
 @section('title', 'Registro Administrador')
 
+@section('styles')
+    @vite('resources/css/registroAdmin.css')
+@endsection
+
 @section('content')
-<div class="card shadow">
-    <div class="card-header bg-danger text-white">
-        <h4>Registro de Administrador</h4>
+<div class="auth-container">
+  <div class="auth-card">
+
+    <div class="card-header">
+      <h1>Crear cuenta de administrador</h1>
+      <p>Completa los datos para continuar</p>
     </div>
+
     <div class="card-body">
+      {{-- Mensajes flash --}}
+      @if(session('success'))
+        <div class="message success">{{ session('success') }}</div>
+      @endif
+      @if(session('error'))
+        <div class="message error">{{ session('error') }}</div>
+      @endif
 
-        {{-- Mensajes flash --}}
-        @if(session('success'))
-            <div class="alert alert-success" role="alert">
-                {{ session('success') }}
-            </div>
-        @endif
+      <form method="POST" action="{{ route('registro.admin') }}" class="auth-form">
+        @csrf
 
-        @if(session('error'))
-            <div class="alert alert-danger" role="alert">
-                {{ session('error') }}
-            </div>
-        @endif
-        {{-- /Mensajes flash --}}
+        <div class="field">
+          <label for="Nombre">Nombre</label>
+          <input id="Nombre" name="Nombre" type="text" value="{{ old('Nombre') }}" required>
+          @error('Nombre') <div class="error-text">{{ $message }}</div> @enderror
+        </div>
 
-        <form method="POST" action="{{ route('registro.admin') }}">
-            @csrf
-            <div class="mb-3">
-                <label for="Nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="Nombre" name="Nombre" value="{{ old('Nombre') }}" required>
-                @error('Nombre') <small class="text-danger">{{ $message }}</small> @enderror
-            </div>
+        <div class="field">
+          <label for="Mail">Correo electrónico</label>
+          <input id="Mail" name="Mail" type="email" value="{{ old('Mail') }}" required>
+          @error('Mail') <div class="error-text">{{ $message }}</div> @enderror
+        </div>
 
-            <div class="mb-3">
-                <label for="Mail" class="form-label">Correo electrónico</label>
-                <input type="email" class="form-control" id="Mail" name="Mail" value="{{ old('Mail') }}" required>
-                @error('Mail') <small class="text-danger">{{ $message }}</small> @enderror
-            </div>
+        <div class="field">
+          <label for="password">Contraseña</label>
+          <input id="password" name="password" type="password" required>
+          <div class="help-text">Mínimo 8 caracteres</div>
+          @error('password') <div class="error-text">{{ $message }}</div> @enderror
+        </div>
 
-            <div class="mb-3">
-                <label for="password" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-                @error('password') <small class="text-danger">{{ $message }}</small> @enderror
-            </div>
+        <div class="field">
+          <label for="password_confirmation">Confirmar contraseña</label>
+          <input id="password_confirmation" name="password_confirmation" type="password" required>
+        </div>
 
-            <div class="mb-3">
-                <label for="password_confirmation" class="form-label">Confirmar contraseña</label>
-                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
-            </div>
-
-            <button type="submit" class="btn btn-danger">Registrar Administrador</button>
-        </form>
+        <button type="submit" class="btn-primary">Registrar Administrador</button>
+        
+      </form>
     </div>
+
+  </div>
 </div>
 @endsection

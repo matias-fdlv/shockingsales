@@ -5,7 +5,10 @@ export default defineConfig({
   plugins: [
     laravel({
       input: ['resources/css/plantilla.css',
-        'resources/css/adminStyle.css'
+        'resources/css/adminStyle.css',
+        'resources/css/registroAdmin.css',
+        'resources/css/registroUsuario.css'
+
       ],
       refresh: true,
     }),

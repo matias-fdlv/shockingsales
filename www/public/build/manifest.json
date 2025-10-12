@@ -14,5 +14,21 @@
     "names": [
       "plantilla.css"
     ]
+  },
+  "resources/css/registroAdmin.css": {
+    "file": "assets/registroAdmin-DTlfdLH8.css",
+    "src": "resources/css/registroAdmin.css",
+    "isEntry": true,
+    "names": [
+      "registroAdmin.css"
+    ]
+  },
+  "resources/css/registroUsuario.css": {
+    "file": "assets/registroUsuario-CqnuX3Nz.css",
+    "src": "resources/css/registroUsuario.css",
+    "isEntry": true,
+    "names": [
+      "registroUsuario.css"
+    ]
   }
 }

@@ -7,7 +7,9 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterUsuarioController;
 use App\Http\Controllers\Auth\RegisterAdminController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\PerfilController;
 use App\Services\SearchService;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -60,10 +62,10 @@ Route::post('logout', [LoginController::class, 'logout'])
 Route::middleware('auth:web')->group(function () {
     Route::resource('personas', PersonaController::class);
 
-    // Registro de Admin (si lo manejás desde el panel del usuario)
-    Route::get('registro/admin', [RegisterAdminController::class, 'mostrarFormularioAdmin'])
-        ->name('registro.admin');
-    Route::post('registro/admin', [RegisterAdminController::class, 'RegistrarAdmin']);
+
+     Route::get('/perfil',         [PerfilController::class, 'mostrarPerfil'])->name('perfil.mostrar');
+    Route::get('/perfil/editar',  [PerfilController::class, 'editarPerfil'])->name('perfil.editar');
+    Route::put('/perfil',         [PerfilController::class, 'actualizarPerfil'])->name('perfil.actualizar');
 });
 
 /*
@@ -98,4 +100,9 @@ Route::prefix('admin')->middleware(['auth:admin', 'admin'])->group(function () {
 
     Route::post('/personas/activar',   [PersonaController::class, 'activarCuenta'])->name('personas.activar');
     Route::post('/personas/desactivar', [PersonaController::class, 'desactivarCuenta'])->name('personas.desactivar');
+
+    // Registro de Admin
+    Route::get('registro/admin', [RegisterAdminController::class, 'mostrarFormularioAdmin'])
+        ->name('registro.admin');
+    Route::post('registro/admin', [RegisterAdminController::class, 'RegistrarAdmin']);
 });

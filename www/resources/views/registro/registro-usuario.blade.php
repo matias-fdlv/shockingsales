@@ -2,6 +2,10 @@
 
 @section('title', 'Registro Usuario')
 
+@section('styles')
+    @vite('resources/css/registroUsuario.css')
+@endsection
+
 @section('content')
 <div class="card shadow">
     <div class="card-header bg-primary text-white">
