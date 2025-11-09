@@ -76,8 +76,8 @@
         @unless ($isAdmin)
             <div class="container">
                 <form class="search" action="{{ url('/buscar') }}" method="GET" role="search">
-                    <input type="text" name="q" placeholder="Buscar producto, modelo o SKU…"
-                        value="{{ request('q') }}" aria-label="Buscar">
+                    <input type="text" name="query" placeholder="Buscar producto, modelo o SKU…"
+                        value="{{ request('query') }}" aria-label="Buscar">
                     <button class="button" type="submit">Buscar</button>
                 </form>
             </div>

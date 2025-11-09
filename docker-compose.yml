@@ -3,6 +3,8 @@ services:
   db:
     image: mysql:8.0.43-debian
     container_name: db
+    networks:
+      - shocking-sales-network
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: dbSS
@@ -25,6 +27,8 @@ services:
   slave:
     image: mysql:8.0.43-debian
     container_name: slave
+    networks:
+      - shocking-sales-network
     environment:
       MYSQL_ROOT_PASSWORD: root
     depends_on:
@@ -47,6 +51,8 @@ services:
   web:
     build: .
     container_name: web
+    networks:
+      - shocking-sales-network
     ports:
       - "8080:80"
     volumes:
@@ -56,11 +62,12 @@ services:
     # los comandos que se usan cada vez que se hace un build del docker compose incluye un sleep para que espere un momento antes de iniciar y usar todos los comandos, debido a que el contenedor de DB tarda un poco en empezar.
     command: >
       bash -lc "
-      sleep 15 && 
+      sleep 100 && 
       cd /var/www/html &&
       rm -f storage/framework/vite.hot &&
       npm ci || npm install &&
       npm run build &&
+      php artisan migrate --force &&   
       php artisan optimize:clear &&
       apache2-foreground
       "
@@ -69,6 +76,8 @@ services:
   phpmyadmin:
     image: phpmyadmin:latest
     container_name: phpmyadmin
+    networks:
+      - shocking-sales-network
     environment:
       PMA_HOST: db
       PMA_USER: root
@@ -77,6 +86,10 @@ services:
       - db
     ports:
       - "8081:80"
+
+networks:
+  shocking-sales-network:
+    external: true
 
 volumes:
   datos_db:

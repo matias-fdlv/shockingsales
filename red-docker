@@ -1,0 +1,2 @@
+esta red nos permitira conectar todos los contenedores para hacer uso de las apis falsas. usarlo antes de hacer build o up
+docker network create shocking-sales-network

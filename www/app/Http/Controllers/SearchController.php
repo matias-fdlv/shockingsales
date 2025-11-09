@@ -31,6 +31,8 @@ class SearchController
     //este metodo se encarga de la busqueda
     public function search(Request $request): View
     {
+
+        
         //se valida la busqueda, una medida de seguridad simple y muy util
         $request->validate([
             //required: no permite busquedas vacías
