@@ -1,55 +1,52 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'ShockingSales')</title>
 
-    {{-- Cargamos el CSS estático desde public/ --}}
     @vite('resources/css/adminStyle.css')
-
+    @stack('styles')
 </head>
-
 <body>
 
-    <header>
-        <h1 class="logo">ShockingSales - Administrador </h1>
+    <header id="site-header">
+        <div id="header-bar">
+            <a href="{{ url('/') }}" id="brand" aria-label="Inicio">
+                <img src="{{ asset('imagenes/logo1.png') }}" alt="ShockingSales" id="logo">
+                <span id="tagline">Comparador · Admin</span>
+            </a>
 
-        <nav>
-            <ul>
+            <ul class="user-actions">
+                <li><a href="{{ route('perfil.mostrar') }}" id="perfil">Mi perfil</a></li>
                 <li>
-                    <div class="container">
-                    
-                </li>
-                <li><a href="{{ url('/admin/dashboard') }}">Home</a></li>
-                <li><a href="{{ route('registro.admin') }}">Crea un nuevo Administrador</a></li>
-                <li><a href="{{ url('/admin/dashboard') }}">Perfil</a></li>
-
-                <li><a href="">Wishlist</a></li>
-
-
-                <li>
-                    <form action="{{ route('logout') }}" method="POST" style="display:inline">
+                    <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button class="button" type="submit">Salir</button>
+                        <button class="button" type="submit">Cerrar sesión</button>
                     </form>
                 </li>
-
             </ul>
-        </nav>
+        </div>
     </header>
 
-    <main>
-        <section class="container">
+    <nav id="primary-nav" aria-label="Principal">
+        <ul id="menu">
+            <li><a href="{{ url('/') }}" aria-current="{{ request()->is('/') ? 'page' : '' }}">Home</a></li>
+            <li><a href="{{ route('registro.admin') }}">Nuevo Administrador</a></li>
+            <li><a href="{{ route('VistaAdmin.homeAdmin') }}">Panel</a></li>
+        </ul>
+    </nav>
+
+    <main id="site-main">
+        <section id="content" class="container">
             @yield('content')
         </section>
     </main>
 
-    <footer>
+    
+    <footer id="site-footer">
         © {{ date('Y') }} ShockingSales
     </footer>
 
 </body>
-
 </html>

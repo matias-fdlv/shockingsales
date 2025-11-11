@@ -1,0 +1,359 @@
+/* ===== Reset simple y variables ===== */
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --brand: #4d6af5;
+    --text: #0f1a37;
+    --muted: #334155;
+    --ring: rgba(77, 106, 245, 0.25);
+}
+
+/* ===== Estructura base: footer pegado abajo ===== */
+html,
+body {
+    height: 100%;
+}
+body {
+    min-height: 100vh; 
+    display: flex; 
+    flex-direction: column;
+    margin: 0;
+    color: var(--text);
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    background: #f5f7fb;
+}
+
+main {
+    flex: 1 0 auto;
+} 
+
+/* ===== Header ===== */
+header {
+    background-color: #3652f0;
+    padding: 12px 20px;
+}
+
+.header-inner {
+    max-width: 1500px;
+    width: 90%; 
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    gap: 16px; 
+}
+
+/* Marca / Logo */
+.logo-img {
+    margin: 0;
+    width: 150px; 
+    height: auto;
+    display: block;
+}
+
+/* Menú */
+.menu {
+    list-style: none;
+    display: flex;
+    gap: 10px; 
+    margin: 0;
+    padding: 0;
+}
+.menu li {
+    display: inline-block;
+}
+.menu a {
+    display: inline-block;
+    background-color: #82c1d1;
+    padding: 8px 12px; 
+    border-radius: 10px;
+    color: #161b46;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+}
+.menu a:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+
+
+
+/* ---------------- Vars del scope ---------------- */
+.results-scope {
+  --rs-brand: #4d6af5;
+  --rs-text: #0f1a37;
+  --rs-muted: #334155;
+  --rs-border: #e5e7eb;
+  --rs-soft: #f3f4f6;
+  --rs-bg-card: #ffffff;
+  --rs-ring: rgba(77, 106, 245, 0.25);
+  --rs-link: #2563eb;
+  --rs-error-bg: #fef2f2;
+  --rs-error: #991b1b;
+  --rs-error-border: #fecaca;
+
+  color: var(--rs-text);
+}
+
+/* Dark mode opcional (si el body usa data-theme="dark" o media query) */
+@media (prefers-color-scheme: dark) {
+  .results-scope {
+    --rs-text: #e5e7eb;
+    --rs-muted: #94a3b8;
+    --rs-border: #334155;
+    --rs-soft: #0b1220;
+    --rs-bg-card: #0f172a;
+    --rs-link: #93c5fd;
+    --rs-error-bg: #2a1111;
+    --rs-error: #fecaca;
+    --rs-error-border: #7f1d1d;
+  }
+}
+
+/* Menos movimiento si el usuario lo prefiere */
+@media (prefers-reduced-motion: reduce) {
+  .results-scope * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------- Layout principal ---------------- */
+.results-scope.search-results {
+  display: grid;
+  gap: 1.5rem;
+}
+
+/* ---------------- Encabezado ---------------- */
+.results-scope .results-header {
+  display: grid;
+  gap: .25rem;
+  border-bottom: 1px solid var(--rs-border);
+  padding-bottom: .75rem;
+}
+.results-scope .results-title {
+  font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+  line-height: 1.2;
+  margin: 0;
+}
+.results-scope .results-title .query {
+  background: #fff3c4;
+  padding: .1em .35em;
+  border-radius: .35em;
+}
+.results-scope .results-subtitle {
+  color: var(--rs-muted);
+  margin: 0;
+}
+.results-scope .results-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  color: var(--rs-text);
+  opacity: .85;
+}
+
+/* ---------------- Alertas ---------------- */
+.results-scope .alert {
+  padding: .75rem 1rem;
+  border-radius: .5rem;
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+}
+.results-scope .alert-error {
+  background: var(--rs-error-bg);
+  color: var(--rs-error);
+  border: 1px solid var(--rs-error-border);
+}
+
+/* ---------------- Sección por tienda ---------------- */
+.results-scope .store-section {
+  display: grid;
+  gap: 1rem;
+}
+.results-scope .store-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  border-bottom: 1px dashed var(--rs-border);
+  padding-bottom: .5rem;
+}
+.results-scope .store-title {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-size: 1.1rem;
+  margin: 0;
+}
+.results-scope .store-name {
+  font-weight: 600;
+}
+.results-scope .product-count {
+  color: var(--rs-muted);
+  font-size: .95rem;
+}
+
+/* ---------------- Grilla de productos ---------------- */
+.results-scope .products-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+@media (min-width: 480px) {
+  .results-scope .products-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (min-width: 768px) {
+  .results-scope .products-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+}
+@media (min-width: 1024px) {
+  .results-scope .products-grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
+}
+
+/* ---------------- Tarjeta ---------------- */
+.results-scope .product-card {
+  background: var(--rs-bg-card);
+  border: 1px solid var(--rs-border);
+  border-radius: .75rem;
+  overflow: hidden;
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  contain: content; /* hint de performance */
+}
+.results-scope .product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,.06);
+  border-color: color-mix(in oklab, var(--rs-border), var(--rs-brand) 20%);
+}
+
+.results-scope .product-link {
+  text-decoration: none;
+  color: inherit;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  outline: none;
+}
+.results-scope .product-link:focus-visible {
+  box-shadow: 0 0 0 4px var(--rs-ring);
+}
+
+/* Imagen con aspecto estable y fallback */
+.results-scope .product-image {
+  aspect-ratio: 16/10;
+  background: var(--rs-soft);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.results-scope .product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .25s ease;
+}
+.results-scope .product-card:hover .product-image img {
+  transform: scale(1.03);
+}
+
+/* Info */
+.results-scope .product-info {
+  display: grid;
+  gap: .5rem;
+  padding: .75rem .9rem .9rem;
+}
+.results-scope.rs-compact .product-name{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4em;
+  min-height: 1.4em;
+}
+
+/* Precio */
+.results-scope .price-section { margin-top: .1rem; }
+.results-scope .current-price {
+  font-weight: 800;
+  font-variation-settings: "wght" 800;
+  font-size: 1.05rem;
+}
+
+/* Rating */
+.results-scope .rating {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  color: var(--rs-muted);
+  font-size: .95rem;
+}
+.results-scope .rating .stars {
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: .05em;
+}
+
+/* Chip de tienda / CTA */
+.results-scope .store-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  margin-top: .25rem;
+  font-size: .92rem;
+  color: var(--rs-link);
+}
+.results-scope .store-chip i {
+  font-size: .9em;
+}
+
+/* ---------------- Estado vacío ---------------- */
+.results-scope .no-results {
+  border: 2px dashed var(--rs-border);
+  border-radius: .75rem;
+  padding: 2rem;
+  text-align: center;
+  color: var(--rs-muted);
+}
+.results-scope .no-results i {
+  display: block;
+  font-size: 1.6rem;
+  margin-bottom: .5rem;
+}
+
+/* ---------------- Utilidades del scope ---------------- */
+.results-scope .visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+.results-scope.rs-compact .products-grid { gap: .75rem; }
+.results-scope.rs-compact .product-info { padding: .65rem .75rem .75rem; }
+.results-scope.rs-compact .product-name{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4em;
+  min-height: 1.4em;
+}
+
+@supports not (aspect-ratio: 1 / 1) {
+  .results-scope .product-image { position: relative; }
+  .results-scope .product-image::before {
+    content: "";
+    display: block;
+    padding-bottom: calc(100% * 10 / 16); /* 16/10 */
+  }
+  .results-scope .product-image > img {
+    position: absolute; inset: 0;
+  }
+}

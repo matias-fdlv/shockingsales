@@ -1,77 +1,124 @@
 <?php
+
 namespace App\Services\Users;
 
 use App\Models\Persona;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Throwable;
 
 class UserDataService
 {
-    //Crea Persona + Administrador
+    private function callSp(string $sql, array $params = []): array
+    {
+        $pdo  = DB::connection()->getPdo();
 
-    public function registrarAdmin(string $nombre, string $mail, string $passwordPlano, int $estado = 1, ?string $secretKey = null): Persona
+        $orig = $pdo->getAttribute(\PDO::ATTR_EMULATE_PREPARES) ?? null;
+        $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
+
+        if (defined('PDO::MYSQL_ATTR_USE_BUFFERED_QUERY')) {
+            @$pdo->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
+        }
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+
+        $rows = $stmt->fetchAll(\PDO::FETCH_OBJ);
+
+        while ($stmt->nextRowset()) {
+        }
+
+        $stmt->closeCursor();
+
+        if ($orig !== null) {
+            $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, $orig);
+        }
+
+        return $rows;
+    }
+
+    
+    //Función para registrar un Usuario
+    public function registrarUsuario(string $nombre, string $mail, string $passwordPlano): Persona
     {
         $hash = Hash::make($passwordPlano);
 
+
+        $this->callSp('CALL dbSS.esc_altaUsuario(?, ?, ?)', [$nombre, $mail, $hash]);
+        $persona = Persona::where('Mail', $mail)->firstOrFail();
+
+        return $persona;
+    }
+
+
+
+
+    //Función para registrar un Administrador
+    public function registrarAdmin(string $nombre, string $mail, string $passwordPlano): Persona
+    {
+        $hash = Hash::make($passwordPlano);
+
+        $this->callSp('CALL esc_altaAdmin(?, ?, ?)', [$nombre, $mail, $hash]);
+
+
+        $persona = Persona::where('Mail', $mail)->firstOrFail();
+        return $persona;
+    }
+
+
+
+    /**
+     * Activa un usuario y devuelve el mensaje del SP.
+     */
+    public function activarUsuario(string $mail): string
+    {
+        $rows = DB::transaction(function () use ($mail) {
+            return $this->callSp('CALL esc_activarUsuario(?)', [$mail]);
+        });
+
+        return $rows[0]->message ?? 'Usuario activado';
+    }
+
+    /**
+     * Desactiva un usuario y devuelve el mensaje del SP.
+     */
+    public function desactivarUsuario(string $mail): string
+    {
         try {
-            $rows = DB::select('CALL altaAdmin(?, ?, ?)', [$nombre, $mail, $hash]);
+            $rows = DB::transaction(function () use ($mail) {
+                return $this->callSp('CALL esc_desactivarUsuario(?)', [$mail]);
+            });
 
-            $id = (int)($rows[0]->IDPersona ?? 0);
-            return Persona::findOrFail($id);
+            return $rows[0]->message ?? 'Usuario desactivado';
         } catch (Throwable $e) {
-
             throw $e;
         }
     }
 
-    //Crea Persona + Usuario 
-    public function registrarUsuario(string $nombre, string $mail, string $passwordPlano, int $estado = 1, ?string $secretKey = null): Persona
+    /*
+     |--------------------------------------------------------------------------
+     | Operaciones Eloquent sobre Persona 
+     |--------------------------------------------------------------------------
+     */
+
+    /**
+     * Listado paginado de personas que tienen usuario asociado.
+     */
+    public function listarUsuarios(int $perPage = 5): LengthAwarePaginator
     {
-        $hash = Hash::make($passwordPlano);
-
-
-        try {
-            $rows = DB::select('CALL altaUsuario(?, ?, ?)', [$nombre, $mail, $hash]);
-
-            $id = (int)($rows[0]->IDPersona ?? 0);
-            return Persona::findOrFail($id);
-        } catch (Throwable $e) {
-
-            throw $e;
-        }
+        return Persona::conUsuario()
+            ->latest()
+            ->paginate($perPage);
     }
 
-
-    //Activar Usuario
-    public function activarUsuario($mail)
+    /**
+     * Eliminar una persona.
+     *
+     * Podés pasar el modelo ya resuelto por route-model binding.
+     */
+    public function eliminarPersona(Persona $persona): void
     {
-        try {
-            $rows = DB::select('CALL activarUsuario (?)', [$mail]);
-
-        } catch (Throwable $e) {
-            // Loguea $e->getMessage() si quieres
-            return back()->with('error', 'Hubo un problema al activar el usuario');
-        }
+        $persona->delete();
     }
-
-    //Desactivar Usuario
-
-public function desactivarUsuario(string $mail): RedirectResponse
-{
-    try {
-        $rows = DB::select('CALL desactivarUsuario(?)', [$mail]);
-        $msg = $rows[0]->message ?? 'Usuario desactivado';
-        return back()->with('status', $msg);
-    } catch (\Throwable $e) {
-        // Muestra el error real del driver si está disponible
-        $msg = $e->getMessage();
-        if (property_exists($e, 'errorInfo') && is_array($e->errorInfo)) {
-            $msg = ($e->errorInfo[2] ?? $msg) . (isset($e->errorInfo[1]) ? " (#{$e->errorInfo[1]})" : '');
-        }
-        return back()->with('error', $msg);
-    }
-}
-
 }

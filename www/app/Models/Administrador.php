@@ -11,4 +11,10 @@ class Administrador extends Model
     public $timestamps = false;
 
     protected $fillable = ['IDPersona'];
+
+
+   public function persona()
+    {
+        return $this->belongsTo(Persona::class, 'IDPersona', 'IDPersona');
+    }
 }

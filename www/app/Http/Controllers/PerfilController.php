@@ -32,44 +32,48 @@ class PerfilController
      * Tabla: personas
      * Columnas: Nombre, Mail, Contraseña
      */
-    public function actualizarPerfil(Request $request)
-    {
-        $user = $request->user();
+   public function actualizarPerfil(Request $request)
+{
+    $user = $request->user();
 
-        $validated = $request->validate([
-            // Si el campo viene en el request, se valida; si no viene, se ignora.
-            'Nombre'      => ['sometimes', 'string', 'max:255'],
-            'Mail'        => [
-                'sometimes',
-                'email',
-                Rule::unique('personas', 'Mail')->ignore($user->getKey(), $user->getKeyName()),
-            ],
-            // Si quieres confirmación: agrega un input name="Contraseña_confirmation" en el form
-            'password'  => ['sometimes', 'string', 'min:8', 'confirmed'],
-        ]);
+    
+    $norm = static function (?string $v) {
+        if ($v === null) return null;
+        $v = trim($v);
+        return $v === '' ? null : $v;
+    };
 
-        $data = [];
+    $request->merge([
+        'Nombre'                => $norm($request->input('Nombre')),
+        'Mail'                  => $norm($request->input('Mail')),
+        'password'              => $norm($request->input('password')),
+        'password_confirmation' => $norm($request->input('password_confirmation')),
+    ]);
 
-        if (array_key_exists('Nombre', $validated)) {
-            $data['Nombre'] = $validated['Nombre'];
-        }
+    
+    $validated = $request->validate([
+        'Nombre'   => ['nullable', 'string', 'max:255'],
+        'Mail'     => ['nullable', 'email', Rule::unique('personas', 'Mail')->ignore($user->getKey(), $user->getKeyName())],
+        'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+    ]);
 
-        if (array_key_exists('Mail', $validated)) {
-            $data['Mail'] = $validated['Mail'];
-        }
+    
+    $data = array_filter([
+        'Nombre' => $validated['Nombre'] ?? null,
+        'Mail'   => $validated['Mail']   ?? null,
+    ], fn ($v) => !is_null($v));
 
-        if (array_key_exists('password', $validated)) {
-            // Hashear antes de guardar
-            $data['password'] = Hash::make($validated['password']);
-        }
-
-        // Guardar evitando problemas de $fillable
-        if (!empty($data)) {
-            $user->forceFill($data)->save();
-        }
-
-        return redirect()
-            ->route('perfil.mostrar')
-            ->with('success', '¡Perfil actualizado correctamente!');
+    if (!empty($validated['password'])) {
+        $data['password'] = Hash::make($validated['password']);
     }
+
+    if (!empty($data)) {
+        $user->forceFill($data)->save();
+    }
+
+    return redirect()
+        ->route('perfil.mostrar')
+        ->with('success', '¡Perfil actualizado correctamente!');
+}
+
 }

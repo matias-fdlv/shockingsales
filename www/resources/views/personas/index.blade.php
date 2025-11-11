@@ -1,10 +1,13 @@
-@extends('layouts.layout')
+@extends('layouts.admin')
 
-@section('content')
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1>Listado de personas</h1>
-    <a href="{{ route('home') }}" class="btn btn-primary">Menú Principal</a>
-</div>
+@section('title', 'Listado de Personas')
+
+@push('styles')
+    @vite('resources/css/personas.css')
+@endpush
+
+@section('content')    
+<h1>Listado de personas</h1>
 
 @if (session('status'))
     <div class="alert alert-success">{{ session('status') }}</div>

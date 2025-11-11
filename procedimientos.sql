@@ -1,70 +1,78 @@
--- PROCEDIMIENTO CREACION DE ADMINS
+
+/*----------------------------------------------------------
+  altaAdmin 
+----------------------------------------------------------*/
+
+
+DROP PROCEDURE IF EXISTS dbSS.esc_altaAdmin;
 DELIMITER //
-create procedure altaAdmin(
-IN p_Nombre VARCHAR(255),
-IN p_Mail VARCHAR(255),
-IN p_Password VARCHAR(255)
+CREATE PROCEDURE dbSS.esc_altaAdmin(
+    IN p_Nombre   VARCHAR(255),
+    IN p_Mail     VARCHAR(255),
+    IN p_Password VARCHAR(255)
 )
 BEGIN
-	DECLARE L_ID INT;
     
-	DECLARE EXIT HANDLER FOR SQLEXCEPTION
-	BEGIN
-		ROLLBACK;
-        SELECT 'Ocurrio un error, transaccion revertida' AS message;
-	END;
-    
-	START TRANSACTION;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION 
+    BEGIN
+        ROLLBACK;
+         
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Error al insertar el administrador en dbSS.esc_altaAdmin';
+    END;
 
-	INSERT INTO personas (Estado, Nombre, Mail, password)
-	VALUES ('Activo', p_Nombre, p_Mail, p_Password);
+    START TRANSACTION;
 
-	SET L_ID = LAST_INSERT_ID();
+    INSERT INTO dbSS.personas (`Estado`,`Nombre`,`Mail`,`password`)
+    VALUES ('Activo', p_Nombre, p_Mail, p_Password);
 
-	INSERT INTO administradors (IDPersona)
-	VALUES (L_ID);
-	COMMIT;
-SELECT L_ID AS IDPersona;
-END //
+    INSERT INTO dbSS.administradors (`IDPersona`)
+    VALUES (LAST_INSERT_ID());
+
+    COMMIT;
+
+END//
 DELIMITER ;
 
--- PROCEDIMIENTO CREACION DE USUARIOS
+/*----------------------------------------------------------
+  altaUsuario 
+----------------------------------------------------------*/
+DROP PROCEDURE IF EXISTS esc_altaUsuario;
 DELIMITER //
-create procedure altaUsuario(
-IN p_Nombre VARCHAR(255),
-IN p_Mail VARCHAR(255),
-IN p_Password VARCHAR(255)
+CREATE PROCEDURE dbSS.esc_altaUsuario(
+    IN p_Nombre   VARCHAR(255),
+    IN p_Mail     VARCHAR(255),
+    IN p_Password VARCHAR(255)
 )
 BEGIN
-	DECLARE L_ID INT;
     
-	DECLARE EXIT HANDLER FOR SQLEXCEPTION
-	BEGIN
-		ROLLBACK;
-        SELECT 'Ocurrio un error, transaccion revertida' AS message;
-	END;
-	START TRANSACTION;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION 
+    BEGIN
+        ROLLBACK;
 
-	INSERT INTO personas (Estado, Nombre, Mail, Password)
-	VALUES ('Activo', p_Nombre, p_Mail, p_Password);
+		SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Error al insertar el usuario';
+    END;
 
-	
-	SET L_ID = LAST_INSERT_ID();
+    START TRANSACTION;
 
-	INSERT INTO usuarios (IDPersona)
-	VALUES (L_ID);
-	COMMIT;
+    INSERT INTO dbSS.personas (`Estado`,`Nombre`,`Mail`,`password`)
+    VALUES ('Activo', p_Nombre, p_Mail, p_Password);
 
-SELECT L_ID AS IDPersona;
+    INSERT INTO dbSS.usuarios (`IDPersona`)
+    VALUES (LAST_INSERT_ID());
 
-END //
+    COMMIT;
+
+END//
 DELIMITER ;
-
--- ==== ACTIVAR USUARIO ====
-DROP PROCEDURE IF EXISTS activarUsuario;
+/*----------------------------------------------------------
+  activarUsuario 
+----------------------------------------------------------*/
+DROP PROCEDURE IF EXISTS esc_activarUsuario;
 DELIMITER //
 
-CREATE DEFINER=CURRENT_USER PROCEDURE activarUsuario(
+CREATE PROCEDURE esc_activarUsuario(
     IN p_Mail VARCHAR(255)
 )
 BEGIN
@@ -80,8 +88,7 @@ BEGIN
 
     UPDATE personas
     SET Estado = 'Activo'
-    WHERE TRIM(Mail) COLLATE utf8mb4_0900_ai_ci
-          = TRIM(p_Mail) COLLATE utf8mb4_0900_ai_ci
+    WHERE TRIM(Mail) = TRIM(p_Mail)
       AND Estado <> 'Activo';
 
     SET huboCambio = ROW_COUNT();
@@ -93,15 +100,17 @@ BEGIN
         ROLLBACK;
         SELECT 'Error: No se encontró ningún usuario con ese email o ya se encuentra activo' AS message;
     END IF;
-END //
-//
-DELIMITER ;
+END//
 
--- ==== DESACTIVAR USUARIO ====
-DROP PROCEDURE IF EXISTS desactivarUsuario;
+DELIMITER ;
+/*----------------------------------------------------------
+  desactivarUsuario
+----------------------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS esc_desactivarUsuario;
 DELIMITER //
 
-CREATE DEFINER=CURRENT_USER PROCEDURE desactivarUsuario(
+CREATE PROCEDURE esc_desactivarUsuario(
     IN p_Mail VARCHAR(255)
 )
 BEGIN
@@ -117,10 +126,9 @@ BEGIN
 
     UPDATE personas
     SET Estado = 'Inactivo'
-    WHERE TRIM(Mail) COLLATE utf8mb4_0900_ai_ci
-          = TRIM(p_Mail) COLLATE utf8mb4_0900_ai_ci
-      AND Estado <> 'Inactivo';   
-      
+    WHERE TRIM(Mail) = TRIM(p_Mail)
+      AND Estado <> 'Inactivo';
+
     SET huboCambio = ROW_COUNT();
 
     IF huboCambio > 0 THEN
@@ -130,6 +138,6 @@ BEGIN
         ROLLBACK;
         SELECT 'Error: No se encontró ningún usuario con ese email o ya se encuentra desactivado' AS message;
     END IF;
-END //
-//
+END//
+
 DELIMITER ;

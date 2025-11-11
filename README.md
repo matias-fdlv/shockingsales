@@ -90,3 +90,15 @@ Añadido<br>
 -Se configuró y modificó el contenedor slave para su uso en la réplica de la base de datos.
 
 ---
+
+[2.3.0] - 2025-1111-11<br>
+Añadido<br>
+-Implementación del 2FA para el login
+<br>
+-Mejora en el los estilos de las vistas 
+<br>
+-Implementacion del proxysql y de la relacion master-slave
+<br>
+-Reorganización de las vistas y el código
+
+---

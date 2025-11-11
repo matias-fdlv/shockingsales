@@ -1,134 +1,176 @@
-@extends('layouts.plantilla')
+@extends('layouts.menu_principal')
 
-@section('title', 'Inicio')
+@section('title', 'Comparador de precios – ShockingSales')
 
 @section('content')
 
-    @guest('admin')
-        <!-- Vista Preliminar de los productos en la pagina principal,  esto está sugetoa cambios -->
+@guest('admin')
+
+{{-- HERO con buscador XL y mensaje claro --}}
+<section id="hero">
+  <div class="container">
+
+    <h1 id="hero-title">Compará precios en segundos</h1>
+    {{-- Buscador principal  --}}
+    <form id="site-search" action="{{ route('search.results') }}" method="GET" role="search">
+            <input
+                type="search"
+                name="query"
+                id="search-input"
+                placeholder="Buscar producto, modelo o SKU…"
+                value="{{ request('query') }}"
+                aria-label="Buscar"
+                required
+                minlength="2"
+            >
+            <button type="submit" class="button" id="search-button">Buscar</button>
+        </form>
+
+  </div>
+</section>
+
+{{-- Cómo funciona (3 pasos) --}}
+<section id="how-it-works">
+  <div class="container">
+    <h2 class="section-title">¿Cómo funciona?</h2>
+    <div id="steps" class="grid">
+        
+      <article class="card step">
+        <div class="step-index">1</div>
+        <h3 class="step-title">Buscá</h3>
+        <p class="step-desc">Escribí el producto exacto o el modelo.</p>
+      </article>
+      <article class="card step">
+        <div class="step-index">2</div>
+        <h3 class="step-title">Compará</h3>
+        <p class="step-desc">Vas a ver el mismo producto en varias tiendas con su precio.</p>
+      </article>
+      <article class="card step">
+        <div class="step-index">3</div>
+        <h3 class="step-title">Comprá en la tienda oficial</h3>
+        <p class="step-desc">Te llevamos con un clic. Sin carrito aquí.</p>
+      </article>
+    </div>
+  </div>
+</section>
 
 
-        <section>
-            <h1>Sugerencias</h1>
-            <article>
-                <div class="suggestions">
-                    <div class="products-grid">
+{{-- Lo más buscado (grid de productos) --}}
+<section id="trending">
+  <div class="container">
+    <div id="trending-head">
+      <h2 class="section-title">Lo más buscado hoy</h2>
+      <small id="trending-note">Actualizado a diario</small>
+    </div>
 
-                        <div class="product-card">
-                            <div class="product-image">
-                                <img src="https://via.placeholder.com/200x150/4a90e2/ffffff?text=Producto+1" alt="Producto 1">
-                            </div>
-                            <div class="product-info">
-                                <div class="product-name">Auriculares Inalámbricos</div>
-                                <div class="product-price">$99.99</div>
-                            </div>
-                        </div>
+    @php
+      // Ejemplo de datos (reemplazar por datos reales del controlador)
+      $trendingProducts = [
+          [
+              'title'  => 'PlayStation 5 Slim 1TB (CFI-2000)',
+              'specs'  => '4K • 1TB • DualSense • Edición 2024',
+              'min'    => 499,
+              'stores' => [
+                  ['name' => 'Amazon',        'price' => 499, 'shipping' => 'Envío rápido',     'url' => '#'],
+                  ['name' => 'eBay',          'price' => 509, 'shipping' => 'Varios vendedores', 'url' => '#'],
+                  ['name' => 'Mercado Libre', 'price' => 515, 'shipping' => 'Full',              'url' => '#'],
+                  ['name' => 'Best Buy',      'price' => 519, 'shipping' => 'Retiro en tienda',  'url' => '#'],
+              ],
+          ],
+          [
+              'title'  => 'Nintendo Switch OLED (modelo 2021)',
+              'specs'  => 'Pantalla OLED • 64GB • Joy-Con incluidos',
+              'min'    => 289,
+              'stores' => [
+                  ['name' => 'Amazon',        'price' => 289, 'shipping' => 'Prime',             'url' => '#'],
+                  ['name' => 'eBay',          'price' => 295, 'shipping' => 'Varios vendedores', 'url' => '#'],
+                  ['name' => 'Mercado Libre', 'price' => 302, 'shipping' => 'Full',              'url' => '#'],
+              ],
+          ],
+          [
+              'title'  => 'SSD NVMe 1TB PCIe 4.0',
+              'specs'  => 'Lectura 7,000 MB/s • M.2 2280',
+              'min'    => 79,
+              'stores' => [
+                  ['name' => 'Amazon',    'price' => 79, 'shipping' => '', 'url' => '#'],
+                  ['name' => 'AliExpress','price' => 85, 'shipping' => '', 'url' => '#'],
+                  ['name' => 'eBay',      'price' => 88, 'shipping' => '', 'url' => '#'],
+              ],
+          ],
+      ];
+    @endphp
 
+    <div id="product-grid" class="grid">
+      @foreach ($trendingProducts as $p)
+        <article class="card product" data-role="product">
+          <figure class="product-media">
+            <img src="{{ asset('imagenes/placeholder-4x3.png') }}" alt="{{ $p['title'] }}">
+            <button
+              type="button"
+              class="wishlist"
+              aria-label="Añadir a wishlist"
+              data-requires-auth="true"
+              onclick="alert('Iniciá sesión para guardar en tu wishlist');"
+            >♡</button>
+          </figure>
 
-                        <div class="product-card">
-                            <div class="product-image">
-                                <img src="https://via.placeholder.com/200x150/e74c3c/ffffff?text=Producto+2" alt="Producto 2">
-                            </div>
-                            <div class="product-info">
-                                <div class="product-name">Smartwatch Deportivo</div>
-                                <div class="product-price">$149.99</div>
-                            </div>
-                        </div>
+          <header class="product-head">
+            <h3 class="product-title">{{ $p['title'] }}</h3>
+            <span class="badge">Comparador</span>
+          </header>
 
-                        <div class="product-card">
-                            <div class="product-image">
-                                <img src="https://via.placeholder.com/200x150/2ecc71/ffffff?text=Producto+3" alt="Producto 3">
-                            </div>
-                            <div class="product-info">
-                                <div class="product-name">Tablet 10 Pulgadas</div>
-                                <div class="product-price">$79.99</div>
-                            </div>
-                        </div>
+          <p class="product-specs">{{ $p['specs'] }}</p>
 
-                        <div class="product-card">
-                            <div class="product-image">
-                                <img src="https://via.placeholder.com/200x150/f39c12/ffffff?text=Producto+4" alt="Producto 4">
-                            </div>
-                            <div class="product-info">
-                                <div class="product-name">Cámara Digital</div>
-                                <div class="product-price">$199.99</div>
-                            </div>
-                        </div>
+          <div class="product-min">
+            <span>Desde</span>
+            <strong class="price">${{ number_format($p['min'], 0, ',', '.') }}</strong>
+          </div>
 
-                        <div class="product-card">
-                            <div class="product-image">
-                                <img src="https://via.placeholder.com/200x150/9b59b6/ffffff?text=Producto+5" alt="Producto 5">
-                            </div>
-                            <div class="product-info">
-                                <div class="product-name">Altavoz Bluetooth</div>
-                                <div class="product-price">$129.99</div>
-                            </div>
-                        </div>
-                    </div>
+          <ul class="store-list">
+            @foreach (array_slice($p['stores'], 0, 3) as $s)
+              <li class="store">
+                <div class="store-data">
+                  <span class="store-avatar">{{ strtoupper(substr($s['name'],0,2)) }}</span>
+                  <div class="store-name">{{ $s['name'] }}</div>
+                  @if (!empty($s['shipping']))
+                    <small class="store-ship">{{ $s['shipping'] }}</small>
+                  @endif
                 </div>
-            </article>
-        </section>
-
-
-        <section>
-            <h1>Nuevas Ofertas</h1>
-            <article>
-                <div class="new-offers">
-                    <div class="offers-grid">
-                        <!-- Oferta 1 -->
-                        <div class="offer-card">
-                            <div class="offer-badge">Oferta</div>
-                            <div class="offer-image">
-                                <img src="https://via.placeholder.com/250x180/3498db/ffffff?text=Oferta+1" alt="Oferta 1">
-                            </div>
-                            <div class="offer-info">
-                                <div class="offer-name">Smart TV 55" 4K</div>
-                                <div class="offer-price">
-                                    <span class="current-price">$79.99</span>
-                                    <span class="original-price">$99.99</span>
-                                    <span class="discount">-20%</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Oferta 2 -->
-                        <div class="offer-card">
-                            <div class="offer-badge">Oferta</div>
-                            <div class="offer-image">
-                                <img src="https://via.placeholder.com/250x180/e74c3c/ffffff?text=Oferta+2" alt="Oferta 2">
-                            </div>
-                            <div class="offer-info">
-                                <div class="offer-name">Laptop Gaming</div>
-                                <div class="offer-price">
-                                    <span class="current-price">$149.99</span>
-                                    <span class="original-price">$199.99</span>
-                                    <span class="discount">-25%</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Oferta 3 -->
-                        <div class="offer-card">
-                            <div class="offer-badge">Oferta</div>
-                            <div class="offer-image">
-                                <img src="https://via.placeholder.com/250x180/2ecc71/ffffff?text=Oferta+3" alt="Oferta 3">
-                            </div>
-                            <div class="offer-info">
-                                <div class="offer-name">Consola de Videojuegos</div>
-                                <div class="offer-price">
-                                    <span class="current-price">$59.99</span>
-                                    <span class="original-price">$79.99</span>
-                                    <span class="discount">-25%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="store-cta">
+                  <span class="store-price">${{ number_format($s['price'], 0, ',', '.') }}</span>
+                  <a
+                    href="#"
+                    class="button"
+                    target="_blank"
+                    rel="sponsored noopener"
+                    aria-label="Ir a la tienda {{ $s['name'] }}"
+                  >Ir a la tienda ↗</a>
                 </div>
-                </div>
+              </li>
+            @endforeach
 
-            </article>
-        </section>
-    @endguest
+            @if (count($p['stores']) > 3)
+              <li class="more-offers">
+                <button type="button">Ver {{ count($p['stores']) - 3 }} ofertas más</button>
+              </li>
+            @endif
+          </ul>
 
+          <footer class="product-foot">
+            <small class="hint">Últimos 30 días</small>
+            <small class="hint">Compra en la tienda oficial</small>
+          </footer>
+        </article>
+      @endforeach
+    </div>
+
+    <p id="product-disclaimer">
+      Compra segura en la tienda oficial. Precios y stock pueden variar.
+    </p>
+  </div>
+</section>
+
+
+@endguest
 
 @endsection

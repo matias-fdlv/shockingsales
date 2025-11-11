@@ -7,7 +7,17 @@ export default defineConfig({
       input: ['resources/css/plantilla.css',
         'resources/css/adminStyle.css',
         'resources/css/registroAdmin.css',
-        'resources/css/registroUsuario.css'
+        'resources/css/registroUsuario.css',
+        'resources/css/resultados.css',
+        'resources/css/personas.css',
+        'resources/css/layout.css',        
+        'resources/css/login.css',
+        'resources/css/2fa.css',
+        'resources/js/user-menu.js',
+        'resources/js/vistaContra.js',
+
+
+
 
       ],
       refresh: true,

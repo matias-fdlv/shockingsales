@@ -2,36 +2,37 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Services\Users\UserDataService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class RegisterUsuarioController
 {
-    public function mostrarFormularioUsuario()
+    public function mostrarFormularioUsuario(): View
     {
         return view('registro.registro-usuario');
     }
 
-    public function RegistrarUsuario(Request $request, UserDataService $service)
-    {
-        $validated = $request->validate([
-            'Nombre'   => 'required|string|max:255',
-            'Mail'     => 'required|email|unique:personas,Mail',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
 
-        $persona = $service->registrarUsuario(
-            nombre: $validated['Nombre'],
-            mail: $validated['Mail'],
-            passwordPlano: $validated['password']
-        );
+   public function RegistrarUsuario(Request $request, UserDataService $service): RedirectResponse
+{
+    $validated = $request->validate([
+        'Nombre'   => ['required', 'string', 'max:255'],
+        'Mail'     => ['required', 'email', 'unique:personas,Mail'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+    ]);
 
-        Auth::login($persona);
-        $request->session()->regenerate();
+    // Crea un usuario con los datos enviados 
+    $persona = $service->registrarUsuario(
+        nombre:        $validated['Nombre'],
+        mail:          $validated['Mail'],
+        passwordPlano: $validated['password']
+    );
 
-        return redirect()->route('home')
-            ->with('success', '¡Usuario registrado con éxito!');
-    }
+    return redirect()
+        ->route('login') 
+        ->with('success', 'Usuario registrado. Inicia sesión para continuar.');
+}
+
 }

@@ -6,18 +6,20 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>@yield('title', 'ShockingSales')</title>
 
-    {{-- CSS base de tu app (elige el que uses por defecto) --}}
-    @vite('resources/css/plantilla.css')
+    
+    @vite('resources/css/layout.css')
 
-    {{-- Espacio para inyectar estilos por vista si hace falta --}}
     @stack('styles')
+
+    @stack('script')
+
 </head>
 <body>
 
     <header>
         <div class="header-inner">
             <a href="{{ url('/') }}" class="brand" aria-label="Inicio">
-                <img src="{{ asset('imagenes/Logo1.JPG') }}" alt="ShockingSales" class="logo-img">
+                <img src="{{ asset('imagenes/logo1.png') }}" alt="ShockingSales" class="logo-img">
             </a>
         </div>
     </header>
@@ -32,7 +34,7 @@
         © {{ date('Y') }} ShockingSales
     </footer>
 
-    {{-- Espacio para inyectar scripts por vista si hace falta --}}
+ 
     @stack('scripts')
 </body>
 </html>

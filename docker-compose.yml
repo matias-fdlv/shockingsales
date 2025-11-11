@@ -15,20 +15,27 @@ services:
       --enforce-gtid-consistency=ON
       --log_replica_updates=ON
       --binlog_format=ROW
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_0900_ai_ci
     ports:
       - "3306:3306"
     volumes:
       - /home/ssteam/datos_db:/var/lib/mysql
+    networks: [reddecontenedores]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-proot"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
 
-
-  
   slave:
     image: mysql:8.0.43-debian
     container_name: slave
     environment:
       MYSQL_ROOT_PASSWORD: root
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     command: >
       --server-id=2
       --relay-log=mysql-relay-bin
@@ -39,10 +46,67 @@ services:
       --log-bin=mysql-bin
       --binlog-format=row
       --binlog-expire-logs-seconds=604800
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_0900_ai_ci
     ports:
       - "3307:3306"
     volumes:
-      - /home/ssteam/datos_slave:/var/lib/mysql 
+      - /home/ssteam/datos_slave:/var/lib/mysql
+    networks: [reddecontenedores]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-proot"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  proxysql:
+    image: proxysql/proxysql:2.5.5
+    container_name: proxysql
+    ports:
+      - "6033:6033" # MySQL front
+      - "6032:6032" # Admin
+    volumes:
+      - /home/ssteam/proxysql:/var/lib/proxysql
+      - ./infra/proxysql_bootstrap.sql:/bootstrap.sql:ro
+    depends_on:
+      db:
+        condition: service_healthy
+      slave:
+        condition: service_healthy
+    networks: [reddecontenedores]
+    restart: always
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mysql -h 127.0.0.1 -P 6032 -u admin -padmin -e 'SELECT 1' >/dev/null 2>&1",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    command: >
+      bash -lc "
+        proxysql -f --idle-threads &
+        for i in {1..60}; do
+          mysql -h 127.0.0.1 -P 6032 -u admin -padmin -e 'SELECT 1' >/dev/null 2>&1 && break
+          sleep 1
+        done
+        mysql -h 127.0.0.1 -P 6032 -u admin -padmin < /bootstrap.sql
+        wait -n
+      "
+
+  db-init:
+    image: mysql:8.0.43-debian
+    container_name: db-init
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [reddecontenedores]
+    volumes:
+      - ./infra/mysql_app_user.sql:/app_user.sql:ro
+    command: >
+      bash -lc "mysql -h db -uroot -proot < /app_user.sql"
+    restart: "no"
 
   web:
     build: .
@@ -52,20 +116,22 @@ services:
     volumes:
       - ./www:/var/www/html
     depends_on:
-      - db
-    # los comandos que se usan cada vez que se hace un build del docker compose incluye un sleep para que espere un momento antes de iniciar y usar todos los comandos, debido a que el contenedor de DB tarda un poco en empezar.
+      proxysql:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
     command: >
       bash -lc "
-      sleep 15 && 
-      cd /var/www/html &&
-      rm -f storage/framework/vite.hot &&
-      npm ci || npm install &&
-      npm run build &&
-      php artisan optimize:clear &&
-      apache2-foreground
+        set -e
+        cd /var/www/html &&
+        rm -f storage/framework/vite.hot || true &&
+        (npm ci || npm install) &&
+        npm run build &&
+        php artisan optimize:clear &&
+        apache2-foreground
       "
+    networks: [reddecontenedores]
 
-  
   phpmyadmin:
     image: phpmyadmin:latest
     container_name: phpmyadmin
@@ -74,10 +140,12 @@ services:
       PMA_USER: root
       PMA_PASSWORD: root
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "8081:80"
+    networks: [reddecontenedores]
 
-volumes:
-  datos_db:
-  datos_slave:
+networks:
+  reddecontenedores:
+    driver: bridge

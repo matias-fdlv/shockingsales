@@ -5,103 +5,75 @@ namespace App\Http\Controllers;
 use App\Models\Persona;
 use App\Services\Users\UserDataService;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class PersonaController
 {
     /**
-     * Display a listing of the resource.
+     * Listado de personas que tienen usuario asociado.
      */
-    public function index()
+    public function index(UserDataService $service): View
     {
-        $personas = Persona::has('usuario')
-            ->with('usuario') 
-            ->latest()
-            ->paginate(5);
+        $personas = $service->listarUsuarios(5);
 
         return view('personas.index', compact('personas'));
     }
 
-
+    
     /**
-     * Show the form for creating a new resource.
+     * Activar cuenta
      */
-    public function create()
+    public function activarCuenta(Request $request, UserDataService $service): RedirectResponse
     {
-        return view('personas.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'Estado' => 'nullable|string',
-            'Nombre' => 'required',
-            'Mail' => 'required',
-            'Contraseña' => 'required',
-            'SecretKey' => 'nullable|string'
+        $data = $request->validate([
+            'Mail' => ['required', 'email'],
         ]);
 
-        Persona::create($request->all());
+        try {
+            $msg = $service->activarUsuario($data['Mail']);
 
-        return redirect()->route('personas.index')->with('success', 'Persona creado correctamente.');
+            return back()->with('status', $msg);
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Hubo un problema al activar el usuario.');
+        }
     }
 
     /**
-     * Display the specified resource.
+     * Desactivar cuenta 
      */
-    public function show(Persona $persona)
+    public function desactivarCuenta(Request $request, UserDataService $service): RedirectResponse
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Persona $persona)
-    {
-        return view('personas.edit', compact('persona'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Persona $persona)
-    {
-        $request->validate([
-            'Estado' => 'nullable|string',
-            'Nombre' => 'required',
-            'Mail' => 'required',
-            'Contraseña' => 'required',
-            'SecretKey' => 'nullable|string'
+        $data = $request->validate([
+            'Mail' => ['required', 'email'],
         ]);
 
-        $persona->update($request->all());
+        try {
+            $msg = $service->desactivarUsuario($data['Mail']);
 
-        return redirect()->route('personas.index')->with('success', 'Persona actualizado correctamente.');
-    }
+            return back()->with('status', $msg);
+        } catch (\Throwable $e) {
+            
+            $msg = $e->getMessage();
 
-    public function activarCuenta(Request $request, UserDataService $service)
-    {
-        $data = $request->validate(['Mail' => ['required', 'email']]);
-        $service->activarUsuario(mail: $data['Mail']);
-        return back();
-    }
+            if (property_exists($e, 'errorInfo') && is_array($e->errorInfo)) {
+                $msg = ($e->errorInfo[2] ?? $msg)
+                    . (isset($e->errorInfo[1]) ? " (#{$e->errorInfo[1]})" : '');
+            }
 
-    public function desactivarCuenta(Request $request, UserDataService $service)
-    {
-        $data = $request->validate(['Mail' => ['required', 'email']]);
-        $service->desactivarUsuario(mail: $data['Mail']);
-        return back();
+            return back()->with('error', $msg);
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminar una persona.
      */
-    public function destroy(Persona $persona)
+    public function destroy(Persona $persona, UserDataService $service): RedirectResponse
     {
-        $persona->delete();
-        return redirect()->route('personas.index')->with('success', 'Persona eliminado correctamente.');
+        $service->eliminarPersona($persona);
+
+        return redirect()
+            ->route('personas.index')
+            ->with('success', 'Persona eliminada correctamente.');
     }
 }

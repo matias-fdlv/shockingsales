@@ -15,7 +15,7 @@
     </div>
 
     <div class="card-body">
-      {{-- Mensajes flash --}}
+ 
       @if(session('success'))
         <div class="message success">{{ session('success') }}</div>
       @endif
@@ -23,7 +23,7 @@
         <div class="message error">{{ session('error') }}</div>
       @endif
 
-      <form method="POST" action="{{ route('registro.admin') }}" class="auth-form">
+      <form method="POST" action="{{ route('registro.admin.store') }}" class="auth-form">
         @csrf
 
         <div class="field">
