@@ -45,7 +45,7 @@ class UserDataService
         $hash = Hash::make($passwordPlano);
 
 
-        $this->callSp('CALL dbSS.esc_altaUsuario(?, ?, ?)', [$nombre, $mail, $hash]);
+        $this->callSp('Call esc_altaUsuario(?, ?, ?)', [$nombre, $mail, $hash]);
         $persona = Persona::where('Mail', $mail)->firstOrFail();
 
         return $persona;

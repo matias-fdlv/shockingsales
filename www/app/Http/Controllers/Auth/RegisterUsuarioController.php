@@ -20,14 +20,14 @@ class RegisterUsuarioController
     $validated = $request->validate([
         'Nombre'   => ['required', 'string', 'max:255'],
         'Mail'     => ['required', 'email', 'unique:personas,Mail'],
-        'password' => ['required', 'string', 'min:8', 'confirmed'],
+        'Password' => ['required', 'string', 'min:8', 'confirmed'],
     ]);
 
     // Crea un usuario con los datos enviados 
     $persona = $service->registrarUsuario(
         nombre:        $validated['Nombre'],
         mail:          $validated['Mail'],
-        passwordPlano: $validated['password']
+        passwordPlano: $validated['Password']
     );
 
     return redirect()

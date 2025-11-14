@@ -58,8 +58,8 @@
                     </div>
 
                     <div class="field">
-                        <label for="password">Contraseña</label>
-                        <input id="password" name="password" type="password" autocomplete="new-password" required>
+                        <label for="Password">Contraseña</label>
+                        <input id="Password" name="password" type="password" autocomplete="new-password" required>
                         <div class="help-text">Mínimo 8 caracteres</div>
                         @error('password')
                             <div class="error-text">{{ $message }}</div>
