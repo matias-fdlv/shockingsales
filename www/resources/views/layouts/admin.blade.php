@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,6 +9,7 @@
     @vite('resources/css/adminStyle.css')
     @stack('styles')
 </head>
+
 <body>
 
     <header id="site-header">
@@ -31,9 +33,11 @@
 
     <nav id="primary-nav" aria-label="Principal">
         <ul id="menu">
-            <li><a href="{{ url('/') }}" aria-current="{{ request()->is('/') ? 'page' : '' }}">Home</a></li>
-            <li><a href="{{ route('registro.admin') }}">Nuevo Administrador</a></li>
-            <li><a href="{{ route('VistaAdmin.homeAdmin') }}">Panel</a></li>
+            <li><a href="{{ url('/') }}" aria-current="{{ request()->is('/') ? 'page' : '' }}" id="home">Home</a></li>
+            <li id="panel">Panel de Configuración</li>
+            <li><a href="{{ route('registro.admin') }}" id="registroAdmin">Nuevo Administrador</a></li>
+
+
         </ul>
     </nav>
 
@@ -43,10 +47,11 @@
         </section>
     </main>
 
-    
+
     <footer id="site-footer">
         © {{ date('Y') }} ShockingSales
     </footer>
 
 </body>
+
 </html>

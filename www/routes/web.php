@@ -85,8 +85,8 @@ Route::post('/admin/logout', function () {
 Route::prefix('admin')->middleware(['auth:admin', 'admin'])->group(function () {
 
     Route::get('/dashboard', function () {
-        return view('VistaAdmin.homeAdmin');
-    })->name('VistaAdmin.homeAdmin');
+        return view('VistaAdmin.panelAdmin');
+    })->name('VistaAdmin.panelAdmin');
 
     Route::get('/dashboard/Administracion-De-Usuarios', [PersonaController::class, 'index'])
         ->name('Administracion-De-Usuarios');

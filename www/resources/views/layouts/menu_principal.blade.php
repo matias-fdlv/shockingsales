@@ -29,7 +29,7 @@
 
         <nav id="primary-nav" aria-label="Principal">
             <ul id="menu">
-                <li><a href="{{ url('/') }}">Home</a></li>
+                <li><a href="{{ url('/') }}"> Home</a></li>
 
                 @guest('web')
                     @guest('admin')
@@ -40,8 +40,9 @@
 
                 {{-- ADMIN: solo deja accesos del panel en el menú (perfil/cerrar van arriba a la derecha) --}}
                 @if ($isAdmin)
-                    <li><a href="{{ route('registro.admin') }}">Crear Admin</a></li>
-                    <li><a href="{{ route('VistaAdmin.homeAdmin') }}">Panel</a></li>
+                    <li><a href="{{ route('VistaAdmin.panelAdmin') }}" id="panel">Panel de Configuración</a></li>
+                    <li><a href="{{ route('registro.admin') }}" id="registroAdmin">Nuevo Administrador</a></li>
+
                 @endif
             </ul>
         </nav>

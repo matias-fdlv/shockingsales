@@ -8,7 +8,7 @@
     ]
   },
   "resources/css/adminStyle.css": {
-    "file": "assets/adminStyle-DreAND9v.css",
+    "file": "assets/adminStyle-BC8VBXh6.css",
     "src": "resources/css/adminStyle.css",
     "isEntry": true,
     "names": [
@@ -29,6 +29,14 @@
     "isEntry": true,
     "names": [
       "login.css"
+    ]
+  },
+  "resources/css/panel.css": {
+    "file": "assets/panel-UbT4SqRd.css",
+    "src": "resources/css/panel.css",
+    "isEntry": true,
+    "names": [
+      "panel.css"
     ]
   },
   "resources/css/personas.css": {

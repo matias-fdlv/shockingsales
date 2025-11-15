@@ -25,7 +25,7 @@ class AdminSeeder extends Seeder
                 [
                     'Nombre'   => $a['nombre'],
                     'Estado'   => 'Activo',
-                    'Password' => Hash::make('secret123'),
+                    'password' => Hash::make('secret123'),
                 ]
             );
 

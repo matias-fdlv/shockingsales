@@ -73,28 +73,29 @@ class UserDataService
      */
     public function activarUsuario(string $mail): string
     {
-        $rows = DB::transaction(function () use ($mail) {
-            return $this->callSp('CALL esc_activarUsuario(?)', [$mail]);
-        });
+        $rows = $this->callSp('CALL esc_activarUsuario(?)', [$mail]);
 
-        return $rows[0]->message ?? 'Usuario activado';
+    if (!empty($rows) && isset($rows[0]->message)) {
+        return $rows[0]->message;
+    }
+
+    return 'Usuario activado';
     }
 
     /**
      * Desactiva un usuario y devuelve el mensaje del SP.
      */
-    public function desactivarUsuario(string $mail): string
-    {
-        try {
-            $rows = DB::transaction(function () use ($mail) {
-                return $this->callSp('CALL esc_desactivarUsuario(?)', [$mail]);
-            });
+   public function desactivarUsuario(string $mail): string
+{
+    $rows = $this->callSp('CALL esc_desactivarUsuario(?)', [$mail]);
 
-            return $rows[0]->message ?? 'Usuario desactivado';
-        } catch (Throwable $e) {
-            throw $e;
-        }
+    if (!empty($rows) && isset($rows[0]->message)) {
+        return $rows[0]->message;
     }
+
+    return 'Usuario desactivado';
+}
+
 
     /*
      |--------------------------------------------------------------------------

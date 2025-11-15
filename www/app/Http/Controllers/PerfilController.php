@@ -28,9 +28,6 @@ class PerfilController
 
     /**
      * Actualizar: Nombre y/o Mail y/o Contraseña (opcional, parcial).
-     *
-     * Tabla: personas
-     * Columnas: Nombre, Mail, Contraseña
      */
    public function actualizarPerfil(Request $request)
 {

@@ -22,7 +22,7 @@ class LoginController
         //Validación de entrada 
         $request->validate([
             'Mail'     => ['required', 'email'],
-            'Password' => ['required', 'string'],
+            'password' => ['required', 'string'],
         ]);
 
         //Busca usuario por email que recibe del formulario

@@ -22,13 +22,13 @@ class Persona extends Authenticatable
         'Estado',
         'Nombre',
         'Mail',
-        'Password',
+        'password',
         'SecretKey',
     ];
 
     // Campos ocultos
     protected $hidden = [
-        'Password',
+        'password',
         'remember_token',
         'SecretKey',
     ];
@@ -37,7 +37,7 @@ class Persona extends Authenticatable
     protected function casts(): array
     {
         return [
-            'Password'  => 'hashed', //La contraseña se hashea automaticamente
+            'password'  => 'hashed', //La contraseña se hashea automaticamente
             'SecretKey' => 'encrypted',//La secretkey se encripta automaticamente
         ];
     }
