@@ -7,45 +7,65 @@
 @endpush
 
 @section('content')
-    <div class="max-w-md mx-auto py-10">
+    <div class="contenedor-2fa">
         @if (session('status'))
-            <div class="alert alert-success mb-4">{{ session('status') }}</div>
+            <div class="alerta alerta--exito alerta--espaciado">{{ session('status') }}</div>
         @endif
 
-        <h1 class="text-2xl font-bold mb-4">Verificación en dos pasos</h1>
+        <h1 class="titulo-2fa">Verificación en dos pasos</h1>
 
         @if (!empty($showQr))
-            <p class="mb-4">Escanea este QR con tu app TOTP (Google Authenticator, etc.).</p>
+            <p class="texto-2fa texto-2fa--margen">
+                Escanea este QR con tu app TOTP (Google Authenticator, etc.).
+            </p>
 
-            <div class="mb-4" style="max-width:260px">
+            <div class="qr-2fa">
                 {!! $qrSvg !!}
             </div>
 
-            <p class="text-sm text-gray-600 mb-6">
+            <p class="texto-2fa texto-2fa--pequeno">
                 ¿No puedes escanear? Ingresa este código manualmente:
-                <code class="px-2 py-1 bg-gray-100 rounded">{{ $secret ?? '' }}</code>
+                <code class="codigo-manual-2fa">{{ $secret ?? '' }}</code>
             </p>
         @else
-            <p class="mb-4">Ingresa el código de tu app de autenticación.</p>
+            <p class="texto-2fa texto-2fa--margen">
+                Ingresa el código de tu app de autenticación.
+            </p>
         @endif
 
-        <form method="POST" action="{{ route('2fa.verify') }}" class="space-y-4" autocomplete="off">
+        <form method="POST"
+              action="{{ route('2fa.verify') }}"
+              class="formulario-2fa"
+              autocomplete="off">
             @csrf
-            <label class="block">
-                <span class="block mb-1">Código de 6 dígitos</span>
-                <input name="code" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code"
-                    class="w-full border rounded px-3 py-2" placeholder="123456" required autofocus>
+
+            <label class="campo-2fa">
+                <span class="etiqueta-2fa">Código de 6 dígitos</span>
+                <input
+                    name="code"
+                    inputmode="numeric"
+                    pattern="[0-9]*"
+                    autocomplete="one-time-code"
+                    class="input-codigo-2fa"
+                    placeholder="123456"
+                    required
+                    autofocus
+                >
             </label>
 
             @error('code')
-                <div class="text-red-600 text-sm">{{ $message }}</div>
+                <div class="mensaje-error-2fa">{{ $message }}</div>
             @enderror
 
-            <button type="submit" class="btn btn-primary w-full">Verificar</button>
+            <button type="submit" class="boton-primario-2fa">
+                Verificar
+            </button>
         </form>
 
-        <div class="mt-6 text-center">
-            <a href="{{ route('login') }}" class="text-sm underline">Cambiar de cuenta</a>
+        <div class="pie-2fa">
+            <a href="{{ route('login') }}" class="enlace-secundario-2fa">
+                Cambiar de cuenta
+            </a>
         </div>
     </div>
 @endsection

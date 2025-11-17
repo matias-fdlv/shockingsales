@@ -1,6 +1,6 @@
 {
   "resources/css/2fa.css": {
-    "file": "assets/2fa-CQGwOuKb.css",
+    "file": "assets/2fa-BwuZZIiV.css",
     "src": "resources/css/2fa.css",
     "isEntry": true,
     "names": [
@@ -8,7 +8,7 @@
     ]
   },
   "resources/css/adminStyle.css": {
-    "file": "assets/adminStyle-BC8VBXh6.css",
+    "file": "assets/adminStyle-BlNxaokA.css",
     "src": "resources/css/adminStyle.css",
     "isEntry": true,
     "names": [
@@ -32,7 +32,7 @@
     ]
   },
   "resources/css/panel.css": {
-    "file": "assets/panel-UbT4SqRd.css",
+    "file": "assets/panel-BODkK1iz.css",
     "src": "resources/css/panel.css",
     "isEntry": true,
     "names": [
@@ -48,7 +48,7 @@
     ]
   },
   "resources/css/plantilla.css": {
-    "file": "assets/plantilla-DxhAMlpi.css",
+    "file": "assets/plantilla-YnFLekcH.css",
     "src": "resources/css/plantilla.css",
     "isEntry": true,
     "names": [
@@ -56,7 +56,7 @@
     ]
   },
   "resources/css/registroAdmin.css": {
-    "file": "assets/registroAdmin-DTlfdLH8.css",
+    "file": "assets/registroAdmin-CnYy6fYK.css",
     "src": "resources/css/registroAdmin.css",
     "isEntry": true,
     "names": [
@@ -80,7 +80,7 @@
     ]
   },
   "resources/js/user-menu.js": {
-    "file": "assets/user-menu-sGdgAETo.js",
+    "file": "assets/user-menu-CQ4S32Xm.js",
     "name": "user-menu",
     "src": "resources/js/user-menu.js",
     "isEntry": true

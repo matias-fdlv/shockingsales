@@ -8,9 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Persona extends Authenticatable
 {
-    // HasFactory: habilita Persona::factory() para tests/seeders
-    // Notifiable: permite enviar notificaciones (mail, etc.) a la persona
-    // A considerar parar el futuro
     use HasFactory, Notifiable;
 
     protected $table = 'personas';
@@ -23,22 +20,20 @@ class Persona extends Authenticatable
         'Nombre',
         'Mail',
         'password',
-        'SecretKey',
+        'SecretKey'
     ];
 
-    // Campos ocultos
     protected $hidden = [
         'password',
         'remember_token',
         'SecretKey',
     ];
 
-    //Casts de atributos. Transforman automáticamente los valores al leer/guardar desde/ hacia la base de datos.
     protected function casts(): array
     {
         return [
-            'password'  => 'hashed', //La contraseña se hashea automaticamente
-            'SecretKey' => 'encrypted',//La secretkey se encripta automaticamente
+            'password'  => 'hashed',
+            'SecretKey' => 'encrypted',
         ];
     }
 

@@ -33,11 +33,11 @@ class LoginController
             !$persona ||
             !Auth::validate(['Mail' => $request->Mail, 'password' => $request->password])
         ) {
-            // Si falla muestra el mensaje error
             throw ValidationException::withMessages([
-                'Mail' => __('auth.failed'),
+                'Mail' => 'El correo no la contraseña no son correctos.',
             ]);
         }
+
 
         //Verificar si el estado de la cuenta es "Activo" para seguir, si no está activa da un mensaje
         if (strtolower(trim((string) $persona->Estado)) !== 'activo') {
@@ -57,35 +57,34 @@ class LoginController
 
 
     // Funcion para cerrar la sesión del usuario y limpia datos relacionados con 2FA.
- 
-public function logout(Request $request)
-{
-    // Si el usuario está autenticado como admin y cierra la esa sesión.
-    if (Auth::guard('admin')->check()) {
-        Auth::guard('admin')->logout();
+
+    public function logout(Request $request)
+    {
+        // Si el usuario está autenticado como admin y cierra la esa sesión.
+        if (Auth::guard('admin')->check()) {
+            Auth::guard('admin')->logout();
+        }
+
+        // Cierra con el logout del guard por defecto que es la sesión principal 
+        Auth::logout();
+
+
+        // Elimina claves temporales que indicaban un login pendiente de 2FA
+        $request->session()->forget(['2fa:pending:id', '2fa:remember']);
+
+        // Invalidate borra la sesión actual
+        $request->session()->invalidate();
+
+        // Regenerar token CSRF para mayor seguridad.
+        $request->session()->regenerateToken();
+
+        //Devuelve a el home
+        return redirect('/');
     }
 
-    // Cierra con el logout del guard por defecto que es la sesión principal 
-    Auth::logout();
-
-
-    // Elimina claves temporales que indicaban un login pendiente de 2FA
-    $request->session()->forget(['2fa:pending:id', '2fa:remember']);
-
-    // Invalidate borra la sesión actual
-    $request->session()->invalidate();
-
-    // Regenerar token CSRF para mayor seguridad.
-    $request->session()->regenerateToken();
-
-    //Devuelve a el home
-    return redirect('/');
-}
-
-// Devuelve el nombre del campo que utiliza la lógica de Auth para identificar al usuario.
-public function username()
-{
-    return 'Mail';
-}
-
+    // Devuelve el nombre del campo que utiliza la lógica de Auth para identificar al usuario.
+    public function username()
+    {
+        return 'Mail';
+    }
 }

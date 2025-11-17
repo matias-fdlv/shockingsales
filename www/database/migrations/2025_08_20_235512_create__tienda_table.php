@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('IDTienda');
             $table->string('Nombre');
             $table->string('API');
-            $table->string('Estado');
+            $table->boolean('Estado')->default(true); 
             $table->timestamps();
         });
     }

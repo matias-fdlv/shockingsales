@@ -15,55 +15,33 @@ class TiendaSeeder extends Seeder
         DB::table('tiendas')->delete();
 
         // Seeder de tiendas, pensadas para futuras integraciones reales
-        $tiendas = [
-            [
-                'nombre' => 'FakeElectro',
-                'api' => 'fake_store',
-                'credenciales' => [
-                    'base_url' => 'https://fakestoreapi.com',
-                    'api_key'  => '',
-                ],
-            ],
-            [
-                'nombre' => 'FakeTech',
-                'api' => 'fake_store',
-                'credenciales' => [
-                    'base_url' => 'https://fakestoreapi.com',
-                    'api_key'  => '',
-                ],
-            ],
-            [
-                'nombre' => 'FakeGadget',
-                'api' => 'fake_store',
-                'credenciales' => [
-                    'base_url' => 'https://fakestoreapi.com',
-                    'api_key'  => '',
-                ],
-            ],
-            [
-                'nombre' => 'FakeDigital',
-                'api' => 'fake_store',
-                'credenciales' => [
-                    'base_url' => 'https://fakestoreapi.com',
-                    'api_key'  => '',
-                ],
-            ],
-        ];
+        // 1. Insertar Toys Store
+        $toysId = DB::table('tiendas')->insertGetId([
+            'NombreTienda' => 'Toys Store',
+            'URLTienda' => 'http://api-web-toy/api',
+            'EstadoTienda' => 1,
+        ]);
 
-        foreach ($tiendas as $tiendaData) {
-            $tienda = Tienda::create([
-                'NombreTienda'  => $tiendaData['nombre'],
-                'URLTienda'     => $tiendaData['credenciales']['base_url'],
-                'EstadoTienda'  => 'Activa',
-            ]);
+        // Insertar credenciales para Toys Store
+        DB::table('credencialesTiendas')->insert([
+            'IDTienda' => $toysId,
+            'Tipo' => 'api_token',
+            'Valor' => 'no_requerido',
+        ]);
 
-            foreach ($tiendaData['credenciales'] as $tipo => $valor) {
-                CredencialTienda::create([
-                    'IDTienda' => $tienda->IDTienda,
-                    'Tipo'     => $tipo,
-                    'Valor'    => $valor,
-                ]);
-            }
-        }
+        // 2. Insertar Tech Store
+        $techId = DB::table('tiendas')->insertGetId([
+            'NombreTienda' => 'Tech Store',
+            'URLTienda' => 'http://api-web-tech/api',
+            'EstadoTienda' => 1,
+        ]);
+
+        // Insertar credenciales para Tech Store
+        DB::table('credencialesTiendas')->insert([
+            'IDTienda' => $techId,
+            'Tipo' => 'api_token',
+            'Valor' => 'no_requerido',
+        ]);
+        
     }
 }

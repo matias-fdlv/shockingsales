@@ -10,14 +10,25 @@ Equipo Formado por:<br>
 
 Guia de despliegue:
 Requisitos previos para usar el programa:
-docker instalado
-docker compose instalado
-sistema operativo linux
+-docker instalado
+-docker compose instalado
+-sistema operativo linux
+-npm instalado
+-composer instalado
 
 1) Clonar repositorio
-2) Entrar a la carpeta del repositorio y establecer todos los archivos con permisos totales usando "chmod -R 777 ."
+2) Entrar a las carpetas api-tech-store/src/ y api-toys-store/src/ y hacer estos comandos en orden:
+-cp .env.example .env
+-composer install
+-sudo chmod -R 777 .
+-npm install
+-php artisan key:generate
+-docker compose up -d --build
+-docker exec -it api-web-nombreapi bash
+-php artisan migrate:fresh --seed
+2) Volver a la carpeta principal(shockingsales) y establecer todos los archivos con permisos totales usando "chmod -R 777 ."
 3) Hacerle build y up usando "docker compose up -d --build"
-4) Entrar al bash de php usando "docker exec -it apache_php bash" y migrar usando "php artisan migrate"
+4) Entrar al bash de php usando "docker exec -it web bash" y migrar usando "php artisan migrate:fresh --seed"
 5) Entrar a "localhost:8080" en el navegador de preferencia. 
 
 CHANGELOG
@@ -91,7 +102,7 @@ Añadido<br>
 
 ---
 
-[2.3.0] - 2025-1111-11<br>
+[2.3.0] - 2025-11-11<br>
 Añadido<br>
 -Implementación del 2FA para el login
 <br>
@@ -100,5 +111,21 @@ Añadido<br>
 -Implementacion del proxysql y de la relacion master-slave
 <br>
 -Reorganización de las vistas y el código
+
+---
+
+[2.4.0] - 2025-11-17<br>
+Añadido<br>
+-APIs reales, conectadas mediante docker networks
+<br>
+-Conexión total con estas apis, permitiendo al usuario buscar productos de dichas APIs mediante busquedas seguras.
+<br>
+-Interfaz de comparación, el usuario al hacer click a un producto es enviado a una interfaz donde puede ver todos los precios de productos iguales en otras tiendas.
+<br>
+-Cambio a la busqueda, ahora muestra todos los productos que concuerdan con lo escrito, pero muestra el mas barato de las tiendas que hay disponibles.
+
+Modificado<br>
+-ProxySQL desactivado de momento (fue todo comentado) por problemas de conexión con este.
+-La conexión con la API ahora es mediante un flujo mejorado.
 
 ---

@@ -26,6 +26,7 @@ Route::get('/', function () {
 */
 Route::post('/buscar', [SearchController::class, 'search'])->name('search.execute');
 Route::get('/buscar',  [SearchController::class, 'search'])->name('search.results');
+Route::get('/product/{storeName}/{productId}', [App\Http\Controllers\SearchController::class, 'showProductDetail'])->name('product.detail');
 
 /*
 |--------------------------------------------------------------------------

@@ -2,90 +2,115 @@
 
 namespace App\Services;
 
-use App\Models\Tienda;
-use App\Models\CredencialTienda;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
+use App\Repositories\StoreRepositoryInterface;
+use App\Http\Integrations\StoreApiClientInterface;
+use App\DTOs\ProductDTO;
+use App\DTOs\SearchResultDTO;
+use Illuminate\Support\Collection;
 
 class SearchService
 {
+    public function __construct(
+        private StoreRepositoryInterface $storeRepository,
+        private StoreApiClientInterface $apiClient
+    ) {}
 
-    //metodo o funcion utilizado en la busqueda.
-    public function search(string $query): array
+    public function searchProducts(string $query): SearchResultDTO
     {
-         //se obtienen tiendas de la BD, con un if por si sale mal
-        $tiendas = Tienda::where('Estado', true)
-            ->where('API', 'fake_store')
-            ->with('credenciales')
-            ->get();
+        $activeStores = $this->storeRepository->getActiveStores();
+        $allProducts = $this->searchInAllStores($activeStores, $query);
+        $cheapestProducts = $this->filterCheapestProducts($allProducts);
+        
+        return new SearchResultDTO(
+            query: $query,
+            productsByStore: $cheapestProducts,
+            totalProducts: $this->countTotalProducts($cheapestProducts),
+            totalStores: $cheapestProducts->count()
+        );
+    }
 
-        if ($tiendas->isEmpty()) {
-            return ['error' => 'No hay tiendas Fake Store configuradas'];
+    public function getProductWithComparisons(string $storeName, string $productId): array
+    {
+        $baseStore = $this->storeRepository->findByName($storeName);
+        
+        if (!$baseStore) {
+            throw new \Exception("Tienda no encontrada: {$storeName}");
         }
 
-        $results = [];
+        $baseProductData = $this->apiClient->findProductById($baseStore, $productId);
+        
+        if (!$baseProductData) {
+            throw new \Exception("Producto no encontrado en la tienda base");
+        }
 
-        //por cada tienda se hace una busqueda, esto haciendo un foreach
-        foreach ($tiendas as $tienda) {
-            try {
-                $storeResults = $this->searchInFakeStoreAPI($tienda, $query);
-                if (!empty($storeResults)) {
-                    $results[$tienda->Nombre] = $storeResults;
-                }
-            } catch (\Exception $e) {
-                Log::error("Error en tienda {$tienda->Nombre}: " . $e->getMessage());
+        $baseProduct = ProductDTO::fromApiResponse($baseProductData, $storeName);
+        
+        $otherStores = $this->storeRepository->getOtherStores($storeName);
+        $comparisons = $this->findProductInOtherStores($productId, $otherStores);
+
+        return [
+            'baseProduct' => $baseProduct,
+            'comparisons' => $comparisons
+        ];
+    }
+
+    private function searchInAllStores(Collection $stores, string $query): Collection
+    {
+        $results = collect();
+        
+        foreach ($stores as $store) {
+            $apiProducts = $this->apiClient->searchProducts($store, $query);
+            
+            $transformedProducts = $apiProducts->map(function ($product) use ($store) {
+                return ProductDTO::fromApiResponse($product, $store->NombreTienda);
+            });
+            
+            if ($transformedProducts->isNotEmpty()) {
+                $results->put($store->NombreTienda, $transformedProducts);
             }
         }
-
-        if (empty($results)) {
-            return ['error' => 'No se encontraron resultados en tiendas Fake Store'];
-        }
-
+        
         return $results;
     }
 
-    //buscar en una tienda especifica, metodo usado en search.
-    private function searchInFakeStoreAPI(Tienda $tienda, string $query): array
-     {
-        //obtener datos en la BD fijos
-        $baseUrl = $tienda->credenciales->where('Tipo', 'base_url')->first()->Valor;
-
-        //peticion HTTP
-        $products = Http::timeout(15)
-            ->retry(3, 100)
-            ->get("{$baseUrl}/products")
-            ->json() ?? [];
-
-        // filtrado de productos con la query o mejor dicho busqueda que hicimos.
-        $filteredProducts = $this->filterProducts($products, $query);
-
-        //return de todo lo que recibimos del array de la peticion HTTP.
-        return array_map(function($product) use ($tienda) {
-            return [
-                'id' => $product['id'],
-                'nombre' => $product['title'],
-                'precio' => $product['price'],
-                'url' => "https://fakestoreapi.com/products/{$product['id']}",
-                'imagen' => $product['image'],
-                'categoria' => $product['category'],
-                'descripcion' => $product['description'] ?? '',
-                'rating' => $product['rating'] ?? null,
-                'tienda_id' => $tienda->Nombre
-            ];
-        }, $filteredProducts);
-    }
-
-    //filtro usando query, o sea, la busqueda que se hizo.
-    private function filterProducts(array $products, string $query): array
+    private function filterCheapestProducts(Collection $storeProducts): Collection
     {
-        if (empty($query)) {
-            return $products;
+        $cheapestProducts = collect();
+        
+        foreach ($storeProducts as $storeName => $products) {
+            foreach ($products as $product) {
+                $productKey = $product->id;
+                $productPrice = $product->precio_actual;
+                
+                if (!$cheapestProducts->has($productKey) || 
+                    $productPrice < $cheapestProducts[$productKey]->precio_actual) {
+                    $cheapestProducts[$productKey] = $product;
+                }
+            }
         }
-
-        return array_filter($products, function($product) use ($query) {
-            $title = $product['title'] ?? '';
-            return stripos($title, $query) !== false;
-        });
+        
+        // Reagrupar por tienda
+        return $cheapestProducts->groupBy('tienda_nombre');
     }
 
+    private function findProductInOtherStores(string $productId, Collection $otherStores): Collection
+    {
+        $comparisons = collect();
+        
+        foreach ($otherStores as $store) {
+            $productData = $this->apiClient->findProductById($store, $productId);
+            
+            if ($productData) {
+                $product = ProductDTO::fromApiResponse($productData, $store->NombreTienda);
+                $comparisons->put($store->NombreTienda, $product);
+            }
+        }
+        
+        return $comparisons;
+    }
+
+    private function countTotalProducts(Collection $productsByStore): int
+    {
+        return $productsByStore->flatten()->count();
+    }
 }
