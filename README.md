@@ -8,12 +8,12 @@ Equipo Formado por:<br>
 -Nicolás Núñez<br>
 
 
-Guia de despliegue:
-Requisitos previos para usar el programa:
--docker instalado
--docker compose instalado
--sistema operativo linux
--npm instalado
+Guia de despliegue:<br>
+Requisitos previos para usar el programa: <br>
+-docker instalado <br>
+-docker compose instalado <br>
+-sistema operativo linux <br>
+-npm instalado <br>
 -composer instalado
 
 1) Clonar repositorio
