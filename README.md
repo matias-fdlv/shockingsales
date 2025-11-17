@@ -19,13 +19,13 @@ Requisitos previos para usar el programa:
 1) Clonar repositorio
 2) Usar el comando "docker network create shocking-sales-network" para crear la red que conecta a todos los contenedores
 3) Entrar a las carpetas api-tech-store/src/ y api-toys-store/src/ y hacer estos comandos en orden:
--cp .env.example .env
--composer install
--sudo chmod -R 777 .
--npm install
--php artisan key:generate
--docker compose up -d --build
--docker exec -it api-web-nombreapi bash
+-cp .env.example .env <br>
+-composer install <br>
+-sudo chmod -R 777 . <br>
+-npm install <br>
+-php artisan key:generate <br>
+-docker compose up -d --build <br>
+-docker exec -it api-web-nombreapi bash <br>
 -php artisan migrate:fresh --seed
 4) Volver a la carpeta principal(shockingsales) y establecer todos los archivos con permisos totales usando "chmod -R 777 ."
 5) Hacerle build y up usando "docker compose up -d --build"
