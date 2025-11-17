@@ -25,8 +25,6 @@ services:
       - shocking-sales-network    
     ports:
       - "6677:80"  # Puerto diferente a tu proyecto actual (8080)
-    volumes:
-      - ./src:/var/www/html  # Carpeta src con el código Laravel
     depends_on:
       - api-db-tech
     environment:
