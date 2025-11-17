@@ -1,11 +1,11 @@
-@extends('layouts.registro')
+@extends('layouts.admin')
 @section('title', 'Registro Administrador')
 
-@section('styles')
+@push('styles')
     @vite('resources/css/registroAdmin.css')
-@endsection
-
+@endpush
 @section('content')
+
 <div class="auth-container">
   <div class="auth-card">
 

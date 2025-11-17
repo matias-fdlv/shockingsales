@@ -1,17 +1,8 @@
-/* ===== Ítem especial: Panel de Configuración ===== */
-
-/* Estilo base del enlace con id="panel" */
-#panel {
-    display: block;
-    padding: 12px 14px;
-    background-color: #e78d7d;
-    color: #0b1530;
+h3 a {
+    color: black;
     text-decoration: none;
-    font-weight: 700;
-    border: 1px solid transparent;
 }
 
-/* Hover solo para ese enlace */
-#panel:hover {
-    background-color: #e78d7d;
+h3 a:hover {
+    color: rgb(223, 95, 63);
 }

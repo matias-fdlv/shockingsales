@@ -1,58 +1,99 @@
 @extends('layouts.layout')
 
+@push('styles')
+    @vite('resources/css/editar.css')
+@endpush
+
+@push('scripts')
+    @vite('resources/js/mensaje.js')
+@endpush
+
+
 @section('content')
-<div class="container">
-    <h1 class="title">Editar perfil</h1>
+    <div class="editar-perfil-contenedor">
+        <h1 class="editar-perfil-titulo">Editar perfil</h1>
 
-    @if ($errors->any())
-        <div class="alert alert-warning" role="alert">
-            <ul class="alert-list">
-                @foreach ($errors->all() as $e)
-                    <li>{{ $e }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+        @if ($errors->any())
+            <div class="editar-perfil-alerta" role="alert">
+                <ul class="editar-perfil-alerta-lista">
+                    @foreach ($errors->all() as $e)
+                        <li>{{ $e }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-    <form method="POST" action="{{ route('perfil.actualizar') }}" class="form" novalidate autocomplete="off">
-        @csrf
-        @method('PUT')
+        <form method="POST"
+              action="{{ route('perfil.actualizar') }}"
+              class="editar-perfil-formulario"
+              novalidate
+              autocomplete="off">
+            @csrf
+            @method('PUT')
 
-        <div class="form-group">
-            <label for="Nombre">Nombre <span class="hint">(opcional)</span></label>
-            <input id="Nombre" name="Nombre" type="text"
-                   value="{{ old('Nombre') }}"
-                   placeholder="Escribe solo si quieres cambiarlo"
-                   autocomplete="off" autocapitalize="none" spellcheck="false">
-        </div>
+            <div class="editar-perfil-grupo">
+                <label for="Nombre" class="editar-perfil-etiqueta">
+                    Nombre <span class="editar-perfil-pista">(opcional)</span>
+                </label>
+                <input id="Nombre"
+                       name="Nombre"
+                       type="text"
+                       class="editar-perfil-input"
+                       value="{{ old('Nombre') }}"
+                       placeholder="Escribe solo si quieres cambiarlo"
+                       autocomplete="off"
+                       autocapitalize="none"
+                       spellcheck="false">
+            </div>
 
-        <div class="form-group">
-            <label for="Mail">Email <span class="hint">(opcional)</span></label>
-            <input id="Mail" name="Mail" type="email"
-                   value="{{ old('Mail') }}"
-                   placeholder="Escribe solo si quieres cambiarlo"
-                   autocomplete="off" autocapitalize="none" spellcheck="false">
-        </div>
+            <div class="editar-perfil-grupo">
+                <label for="Mail" class="editar-perfil-etiqueta">
+                    Email <span class="editar-perfil-pista">(opcional)</span>
+                </label>
+                <input id="Mail"
+                       name="Mail"
+                       type="email"
+                       class="editar-perfil-input"
+                       value="{{ old('Mail') }}"
+                       placeholder="Escribe solo si quieres cambiarlo"
+                       autocomplete="off"
+                       autocapitalize="none"
+                       spellcheck="false">
+            </div>
 
-        <hr class="divider">
+            <hr class="editar-perfil-separador">
 
-        <div class="form-group">
-            <label for="password">Nueva contraseña <span class="hint">(opcional)</span></label>
-            <input id="password" name="password" type="password"
-                   placeholder="Mínimo 8 caracteres"
-                   autocomplete="new-password">
-        </div>
+            <div class="editar-perfil-grupo">
+                <label for="password" class="editar-perfil-etiqueta">
+                    Nueva contraseña <span class="editar-perfil-pista">(opcional)</span>
+                </label>
+                <input id="password"
+                       name="password"
+                       type="password"
+                       class="editar-perfil-input"
+                       placeholder="Mínimo 8 caracteres"
+                       autocomplete="new-password">
+            </div>
 
-        <div class="form-group">
-            <label for="password_confirmation">Confirmar nueva contraseña</label>
-            <input id="password_confirmation" name="password_confirmation" type="password"
-                   autocomplete="new-password">
-        </div>
+            <div class="editar-perfil-grupo">
+                <label for="password_confirmation" class="editar-perfil-etiqueta">
+                    Confirmar nueva contraseña
+                </label>
+                <input id="password_confirmation"
+                       name="password_confirmation"
+                       type="password"
+                       class="editar-perfil-input"
+                       autocomplete="new-password">
+            </div>
 
-        <div class="actions">
-            <button type="submit" class="btn btn-primary">Guardar cambios</button>
-            <a href="{{ route('perfil.mostrar') }}" class="btn btn-secondary">Cancelar</a>
-        </div>
-    </form>
-</div>
+            <div class="editar-perfil-acciones">
+                <button type="submit" class="editar-perfil-boton-primario">
+                    Guardar cambios
+                </button>
+                <a href="{{ route('perfil.mostrar') }}" class="editar-perfil-boton-secundario">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
 @endsection

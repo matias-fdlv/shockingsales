@@ -6,7 +6,7 @@ use App\Models\Persona;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Throwable;
+use Illuminate\Support\Facades\Log;
 
 class UserDataService
 {
@@ -40,31 +40,21 @@ class UserDataService
 
     
     //Función para registrar un Usuario
-    public function registrarUsuario(string $nombre, string $mail, string $passwordPlano): Persona
+  public function registrarUsuario(string $nombre, string $mail, string $passwordPlano): void
     {
         $hash = Hash::make($passwordPlano);
 
-
-        $this->callSp('Call esc_altaUsuario(?, ?, ?)', [$nombre, $mail, $hash]);
-        $persona = Persona::where('Mail', $mail)->firstOrFail();
-
-        return $persona;
+        $this->callSp('CALL esc_altaUsuario(?, ?, ?)', [$nombre, $mail, $hash]);
     }
 
-
-
-
-    //Función para registrar un Administrador
-    public function registrarAdmin(string $nombre, string $mail, string $passwordPlano): Persona
+    // ==== Registrar admin ====
+    public function registrarAdmin(string $nombre, string $mail, string $passwordPlano): void
     {
         $hash = Hash::make($passwordPlano);
 
         $this->callSp('CALL esc_altaAdmin(?, ?, ?)', [$nombre, $mail, $hash]);
-
-
-        $persona = Persona::where('Mail', $mail)->firstOrFail();
-        return $persona;
     }
+
 
 
 

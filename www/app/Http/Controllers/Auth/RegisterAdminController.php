@@ -15,23 +15,23 @@ class RegisterAdminController
         return view('registro.registro-admin');
     }
 
-        public function RegistrarAdmin(Request $request, UserDataService $service): RedirectResponse
-    {
-        $validated = $request->validate([
-            'Nombre'   => ['required', 'string', 'max:255'],
-            'Mail'     => ['required', 'email', 'unique:personas,Mail'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+      public function RegistrarAdmin(Request $request, UserDataService $service): RedirectResponse
+{
+    $validated = $request->validate([
+        'Nombre'   => ['required', 'string', 'max:255'],
+        'Mail'     => ['required', 'email', 'unique:personas,Mail'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+    ]);
 
-        // Crea un administrador con los datos enviados
-        $service->registrarAdmin(
-            nombre:        $validated['Nombre'],
-            mail:          $validated['Mail'],
-            passwordPlano: $validated['password'],
-        );
+    $service->registrarAdmin(
+        nombre:        $validated['Nombre'],
+        mail:          $validated['Mail'],
+        passwordPlano: $validated['password']
+    );
 
-        return redirect()
-            ->route('registro.admin')
-            ->with('success', 'Administrador registrado. Inicia sesión para continuar.');
-    }
+    return redirect()
+        ->route('registro.admin')
+        ->with('success', 'Administrador registrado. Inicia sesión para continuar.');
+}
+
 }

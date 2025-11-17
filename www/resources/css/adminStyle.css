@@ -37,7 +37,7 @@ body {
     gap: 16px;
     justify-content: flex-start;
     padding: 0 16px;
-    padding-right: 240px;
+    padding-right: 240px; /* espacio para el menú de usuario a la derecha */
 }
 #brand {
     display: inline-flex;
@@ -67,39 +67,92 @@ body {
     }
 }
 
-/* ====== Acciones usuario (arriba-derecha) ====== */
-.user-actions {
+/* ====== Menú de cuenta (admin y usuario) ====== */
+.user-menu {
     position: fixed;
     top: 12px;
     right: 18px;
     z-index: 1200;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    list-style: none;
-    margin: 0;
-    padding: 0;
 }
-.user-actions a {
-    display: inline-block;
+
+.user-select {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     padding: 8px 12px;
-    border-radius: 12px;
-    background: #e9eefb;
+    border-radius: 999px;
     border: 1px solid #cfd6e6;
+    background: #e9eefb;
     color: #0b1530;
     font-weight: 700;
-    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
 }
-.user-actions a:hover {
-    background: #dfe6f8;
+
+.user-select .label {
+    line-height: 1;
 }
-.user-actions .button {
-    padding: 8px 12px;
-    border-radius: 12px;
-    border: 1px solid #cfd6e6;
+
+.user-select .caret {
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 6px solid #4b5563;
+}
+
+/* Si usas avatar en el futuro */
+.user-select .avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
     background: #0c1636;
     color: #ffffff;
-    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+/* Dropdown de la cuenta */
+.user-dropdown {
+    position: absolute;
+    right: 0;
+    margin-top: 6px;
+    min-width: 160px;
+    padding: 6px 0;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+    border: 1px solid #e5e7eb;
+    display: none;
+}
+
+/* user-menu.js agregará / quitará esta clase */
+.user-menu.is-open .user-dropdown {
+    display: block;
+}
+
+.user-dropdown .menu-item {
+    display: block;
+    width: 100%;
+    padding: 8px 14px;
+    text-align: left;
+    font-size: 14px;
+    color: #0b1530;
+    text-decoration: none;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+.user-dropdown .menu-item:hover {
+    background: #f6f8fc;
+}
+
+/* Para que el form de "Salir" no meta márgenes raros */
+.user-dropdown form {
+    margin: 0;
 }
 
 /* ====== Botón genérico (resto) ====== */
@@ -140,7 +193,7 @@ body {
     overflow: auto;
     display: flex;
     flex-direction: column;
-    background-color: #e78d7d;
+    background-color: #f0f0f0;
     border-right: 1px solid #e6e9f2;
 }
 #menu > li {
@@ -148,7 +201,7 @@ body {
 }
 
 #menu a {
-      background: #f6f8fc;
+    background: #f6f8fc;
     display: block;
     padding: 12px;
     color: #0b1530;
@@ -157,7 +210,7 @@ body {
     border: 1px solid transparent;
 }
 #menu a:hover {
-    background: #e9eefb;
+    background: #ffc5a3;
     border-color: #d7def2;
 }
 
@@ -334,15 +387,17 @@ main#site-main {
         border-right: 0;
         border-bottom: 1px solid #e6e9f2;
     }
-    /* las acciones de usuario bajan al flujo normal */
+
+    /* el menú de usuario baja al flujo normal */
     #header-bar {
         padding-right: 0;
     }
-    .user-actions {
+    .user-menu {
         position: static;
         margin-left: auto;
         padding-top: 6px;
     }
+
     main#site-main,
     #site-footer {
         margin-left: 0;
