@@ -1,7 +1,0 @@
-Usuario → Formulario → Controller → Servicio → Vista
-1) El usuario, usando la search bar del programa (de la LAYOUT pantilla.blade.php) escribe un producto (de momento, una categoría, tal como "shirt")
-2) En routes, al darle al boton de busqueda, se usara el producto con el metodo SearchController.
-3) SearchController se encarga de llamar al servicio
-4) El servicio, SearchService, hace la petición a Fake Store API y devuelve los resultados de las tiendas especificadas en los seeders.
-5) SearchController hace un return con los resultados
-6) En la vista, results.blade.php, se muestra todo lo de este return.
