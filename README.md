@@ -17,7 +17,8 @@ Requisitos previos para usar el programa:
 -composer instalado
 
 1) Clonar repositorio
-2) Entrar a las carpetas api-tech-store/src/ y api-toys-store/src/ y hacer estos comandos en orden:
+2) Usar el comando "docker network create shocking-sales-network" para crear la red que conecta a todos los contenedores
+3) Entrar a las carpetas api-tech-store/src/ y api-toys-store/src/ y hacer estos comandos en orden:
 -cp .env.example .env
 -composer install
 -sudo chmod -R 777 .
@@ -26,10 +27,10 @@ Requisitos previos para usar el programa:
 -docker compose up -d --build
 -docker exec -it api-web-nombreapi bash
 -php artisan migrate:fresh --seed
-2) Volver a la carpeta principal(shockingsales) y establecer todos los archivos con permisos totales usando "chmod -R 777 ."
-3) Hacerle build y up usando "docker compose up -d --build"
-4) Entrar al bash de php usando "docker exec -it web bash" y migrar usando "php artisan migrate:fresh --seed"
-5) Entrar a "localhost:8080" en el navegador de preferencia. 
+4) Volver a la carpeta principal(shockingsales) y establecer todos los archivos con permisos totales usando "chmod -R 777 ."
+5) Hacerle build y up usando "docker compose up -d --build"
+6) Entrar al bash de php usando "docker exec -it web bash" y migrar usando "php artisan migrate:fresh --seed"
+7) Entrar a "localhost:8080" en el navegador de preferencia. 
 
 CHANGELOG
 ---
