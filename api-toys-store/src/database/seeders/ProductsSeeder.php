@@ -9,8 +9,7 @@ class ProductsSeeder extends Seeder
 {
     public function run(): void
     {
-        // ❌ Product::truncate(); // CUIDADO: Borra TODOS los datos
-        // Mejor usar: Product::query()->delete(); si quieres limpiar
+  
 
         $productos = [
             [
@@ -116,11 +115,9 @@ class ProductsSeeder extends Seeder
         ];
 
         foreach ($productos as $productoData) {
-            // ✅ FORMA SEGURA: Usando el modelo
+
             Product::create($productoData);
-            
-            // ❌ NO HACER: $producto = new Product(); $producto->save();
-            // Porque bypass las validaciones del modelo
+
         }
     }
 }

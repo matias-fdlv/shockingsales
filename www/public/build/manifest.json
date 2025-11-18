@@ -15,6 +15,14 @@
       "adminStyle.css"
     ]
   },
+  "resources/css/editar.css": {
+    "file": "assets/editar-by1vkOLw.css",
+    "src": "resources/css/editar.css",
+    "isEntry": true,
+    "names": [
+      "editar.css"
+    ]
+  },
   "resources/css/layout.css": {
     "file": "assets/layout-ClX4M1Z8.css",
     "src": "resources/css/layout.css",
@@ -37,6 +45,14 @@
     "isEntry": true,
     "names": [
       "panel.css"
+    ]
+  },
+  "resources/css/perfil.css": {
+    "file": "assets/perfil-CxSAb81Z.css",
+    "src": "resources/css/perfil.css",
+    "isEntry": true,
+    "names": [
+      "perfil.css"
     ]
   },
   "resources/css/personas.css": {
@@ -78,6 +94,12 @@
     "names": [
       "resultados.css"
     ]
+  },
+  "resources/js/mensaje.js": {
+    "file": "assets/mensaje-ByHv0Xs9.js",
+    "name": "mensaje",
+    "src": "resources/js/mensaje.js",
+    "isEntry": true
   },
   "resources/js/user-menu.js": {
     "file": "assets/user-menu-CQ4S32Xm.js",

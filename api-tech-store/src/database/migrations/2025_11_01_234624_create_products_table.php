@@ -13,15 +13,15 @@ return new class extends Migration
     {
     Schema::create('products', function (Blueprint $table) {
         $table->string('id')->primary();
-        $table->string('nombre'); // 📛 VARCHAR(255) en MySQL
-        $table->decimal('precio_actual', 8, 2); // 💰 999999.99
+        $table->string('nombre'); // 
+        $table->decimal('precio_actual', 8, 2); 
         $table->decimal('precio_original', 8, 2);
-        $table->string('categoria'); // 🏷️ figures, consoles, etc.
-        $table->string('enlace_producto'); // 🔗 URL relativa
-        $table->string('imagen_url'); // 🖼️ URL de imagen
-        $table->boolean('disponible')->default(true); // ✅/❌
-        $table->decimal('valoracion', 3, 1)->default(5.0); // ⭐ 4.5
-        $table->timestamps(); // 🕐 created_at, updated_at AUTOMÁTICOS
+        $table->string('categoria'); //
+        $table->string('enlace_producto'); 
+        $table->string('imagen_url'); //
+        $table->boolean('disponible')->default(true);
+        $table->decimal('valoracion', 3, 1)->default(5.0); 
+        $table->timestamps(); // 
         });
     }
 

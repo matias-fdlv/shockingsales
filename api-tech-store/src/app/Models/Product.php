@@ -16,9 +16,9 @@ class Product extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'id',
-        'nombre',           // ✅ Acepto que me cambien el nombre
-        'precio_actual',    // ✅ Acepto que me cambien el precio
-        'categoria',        // ✅ Acepto que me cambien la categoría
+        'nombre',         
+        'precio_actual',  
+        'categoria',        
         // ... todos los campos que quieres permitir
     ];
 
@@ -32,6 +32,4 @@ class Product extends Model
         'valoracion' => 'decimal:1',    // "4.5" → 4.5 (decimal)
     ];
 
-    // ❌ NOTA: NO necesitas definir $table = 'products'
-    // Laravel automáticamente usa el plural del modelo: Product → products
 }

@@ -16,26 +16,24 @@ class ProductController extends Controller
                 // Iniciar la consulta
         $query = Product::query();
         
-        // 🔑 NUEVO FILTRO: Búsqueda por ID Universal (GTIN/EAN)
-    // Asumimos que el campo que almacena el ID Universal en la tabla 'products' es 'id'.
-    // Si tu campo en la BD se llama 'gtin', usa 'gtin' en su lugar.
+
     if ($request->has('universal_id') && !empty($request->universal_id)) {
-        // Ejecutamos una búsqueda EXACTA por el ID Universal
+
         $query->where('id', $request->universal_id);
     }
 
-        // 🔍 FILTRO: Búsqueda en nombre (like)
+
         if ($request->has('search') && !empty($request->search)) {
             $searchTerm = $request->search;
             $query->where('nombre', 'like', "%{$searchTerm}%");
         }
         
-        // 🏷️ FILTRO: Por categoría específica
+
         if ($request->has('categoria') && !empty($request->categoria)) {
             $query->where('categoria', $request->categoria);
         }
         
-        // 💰 FILTRO: Rango de precios
+
         if ($request->has('precio_min')) {
             $query->where('precio_actual', '>=', $request->precio_min);
         }
@@ -43,17 +41,17 @@ class ProductController extends Controller
             $query->where('precio_actual', '<=', $request->precio_max);
         }
         
-        // ✅ FILTRO: Solo productos disponibles
+
         if ($request->has('disponible')) {
             $query->where('disponible', $request->boolean('disponible'));
         }
         
-        // ⭐ FILTRO: Valoración mínima
+
         if ($request->has('valoracion_min')) {
             $query->where('valoracion', '>=', $request->valoracion_min);
         }
         
-        // 📊 OBTENER resultados
+
         $productos = $query->get();
         
         return response()->json([

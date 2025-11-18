@@ -19,7 +19,7 @@ class ProductDTO
         public float $ahorro
     ) {}
 
-    // Método estático para crear desde array de API
+    
     public static function fromApiResponse(array $data, string $tiendaNombre): self
     {
         $precioOriginal = $data['precio_original'] ?? $data['precio_actual'];

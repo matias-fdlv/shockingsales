@@ -14,8 +14,11 @@ export default defineConfig({
         'resources/css/login.css',
         'resources/css/2fa.css',
         'resources/css/panel.css',
+        'resources/css/perfil.css',
+        'resources/css/editar.css',
         'resources/js/user-menu.js',
         'resources/js/vistaContra.js',
+        'resources/js/mensaje.js',
 
 
 
