@@ -30,7 +30,9 @@ Requisitos previos para usar el programa: <br>
 4) Volver a la carpeta principal(shockingsales) y establecer todos los archivos con permisos totales usando "chmod -R 777 ."
 5) Hacerle build y up usando "docker compose up -d --build"
 6) Entrar al bash de php usando "docker exec -it web bash" y migrar usando "php artisan migrate:fresh --seed"
-7) Entrar a "localhost:8080" en el navegador de preferencia. 
+7) Entrar a "localhost:8080" en el navegador de preferencia.
+
+Evidencias del proyecto pueden ser encontradas <a href="https://github.com/matias-fdlv/shockingsales/tree/main/Explicaciones%20y%20auditoria">aqui</a> 
 
 CHANGELOG
 ---
